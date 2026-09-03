@@ -19,6 +19,8 @@ export const Modals: React.FC = () => {
     completedOrderModal,
     setCompletedOrderModal,
     assignArtisanToOrder,
+    isMenuOpen,
+    setIsMenuOpen,
     setCurrentScreen,
     showToast
   } = useApp();
@@ -628,6 +630,97 @@ export const Modals: React.FC = () => {
               >
                 Return to Discover
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 8. Slide-over Navigation Drawer */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 flex animate-in fade-in">
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            onClick={() => setIsMenuOpen(false)}
+          />
+          <div className="relative w-80 max-w-[85vw] bg-white h-full p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-left duration-300">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-black text-[#fed65b] flex items-center justify-center font-bold font-mono text-sm">
+                    MST
+                  </div>
+                  <span className="font-headline-sm text-sm font-bold tracking-wider uppercase">
+                    MST Global Atelier
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200"
+                >
+                  <span className="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+
+              <div className="py-4 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block px-3 mb-2">
+                  Storefront Portals
+                </span>
+                {[
+                  { screen: 'discover', label: 'Explore Collections', icon: 'home' },
+                  { screen: 'categories', label: 'All Categories', icon: 'grid_view' },
+                  { screen: 'wishlist', label: 'Wishlist & Favorites', icon: 'favorite' },
+                  { screen: 'bag', label: 'Shopping Bag', icon: 'shopping_bag' },
+                  { screen: 'account', label: 'My Account & Orders', icon: 'account_circle' }
+                ].map((item) => (
+                  <button
+                    key={item.screen}
+                    onClick={() => {
+                      setCurrentScreen(item.screen as any);
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-gray-800 hover:bg-[#f4f4f2] transition-colors text-left"
+                  >
+                    <span className="material-symbols-outlined text-[20px] text-[#735c00]">
+                      {item.icon}
+                    </span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block px-3 mb-2">
+                    Executive &amp; Operations Systems
+                  </span>
+                  {[
+                    { screen: 'admin', label: 'Admin ERP Panel (19 Menus)', icon: 'admin_panel_settings', badge: 'Admin' },
+                    { screen: 'logistics', label: 'Logistics & Dispatch Hub', icon: 'local_shipping', badge: 'DDP' }
+                  ].map((item) => (
+                    <button
+                      key={item.screen}
+                      onClick={() => {
+                        setCurrentScreen(item.screen as any);
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold text-black bg-[#f4f4f2] hover:bg-[#e8e8e6] mb-1.5 transition-colors text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-[20px] text-black">
+                          {item.icon}
+                        </span>
+                        <span>{item.label}</span>
+                      </div>
+                      <span className="text-[10px] font-bold bg-[#fed65b] text-black px-2 py-0.5 rounded-full">
+                        {item.badge}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-gray-100 text-xs text-gray-500">
+              <p className="font-semibold text-black">MST Global Fashion Pvt Ltd</p>
+              <p className="text-[11px] mt-0.5">DDP Pre-cleared Cross-Border Commerce</p>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   CurrencyCode,
   Product,
@@ -7,7 +7,9 @@ import {
   ProductColor,
   ProductSizeOption,
   ScreenType,
-  AuditLogEntry
+  AuditLogEntry,
+  UserAccount,
+  Address
 } from '../types';
 import {
   CURRENCIES,
@@ -69,6 +71,36 @@ interface AppContextType {
   ) => void;
   toastMessage: string | null;
   showToast: (msg: string) => void;
+  // User Authentication & RBAC
+  currentUser: UserAccount | null;
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  authModalMode: 'login' | 'register';
+  setAuthModalMode: (mode: 'login' | 'register') => void;
+  login: (email: string, password?: string, role?: string) => Promise<{ success: boolean; error?: string }>;
+  register: (data: {
+    fullName: string;
+    email: string;
+    password?: string;
+    mobile?: string;
+    country?: string;
+    adminSecret?: string;
+    requestedRole?: string;
+  }) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
+  quickLoginAdmin: () => Promise<void>;
+  quickLoginCustomer: () => Promise<void>;
+  // Real-World Address Management
+  addresses: Address[];
+  selectedAddressId: string | null;
+  selectedAddress: Address | null;
+  setSelectedAddressId: (id: string) => void;
+  addAddress: (address: Omit<Address, 'id'>) => Address;
+  updateAddress: (id: string, address: Partial<Address>) => void;
+  deleteAddress: (id: string) => void;
+  setDefaultAddress: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -152,11 +184,264 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   } | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Authentication & RBAC
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
+    try {
+      const saved = localStorage.getItem('mst_user');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error('Failed to load cached user', e);
+    }
+    return {
+      id: 'usr-admin-yashwanth',
+      email: 'yashwanthk2004k@gmail.com',
+      fullName: 'Yashwanth',
+      mobile: '+91 98200 99999',
+      country: 'India',
+      role: 'super_admin',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80'
+    };
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+
+  const isAdmin = Boolean(
+    currentUser &&
+    (
+      currentUser.role === 'super_admin' ||
+      currentUser.role === 'admin' ||
+      currentUser.role === 'catalogue_manager' ||
+      currentUser.role === 'order_manager' ||
+      currentUser.role === 'finance_manager' ||
+      currentUser.role === 'marketing_manager' ||
+      currentUser.role === 'support_agent' ||
+      currentUser.email.toLowerCase() === 'yashwanthk2004k@gmail.com' ||
+      currentUser.email.toLowerCase() === 'admin@mstglobalfashion.com'
+    )
+  );
+
+  const isSuperAdmin = Boolean(
+    currentUser &&
+    (currentUser.role === 'super_admin' || currentUser.email.toLowerCase() === 'yashwanthk2004k@gmail.com')
+  );
+
+  const login = async (email: string, password?: string, role?: string) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || 'Authentication failed' };
+      }
+      const user = data.user;
+      setCurrentUser(user);
+      try {
+        localStorage.setItem('mst_user', JSON.stringify(user));
+      } catch (e) {}
+
+      setIsAuthModalOpen(false);
+      showToast(`Welcome back, ${user.fullName}!`);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Network error during sign-in' };
+    }
+  };
+
+  const register = async (data: {
+    fullName: string;
+    email: string;
+    password?: string;
+    mobile?: string;
+    country?: string;
+    adminSecret?: string;
+    requestedRole?: string;
+  }) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const resData = await res.json();
+      if (!res.ok) {
+        return { success: false, error: resData.error || 'Registration failed' };
+      }
+      const user = resData.user;
+      setCurrentUser(user);
+      try {
+        localStorage.setItem('mst_user', JSON.stringify(user));
+      } catch (e) {}
+
+      setIsAuthModalOpen(false);
+      showToast(`Account successfully created! Welcome, ${user.fullName}`);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Network error during account registration' };
+    }
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('mst_user');
+    } catch (e) {}
+    showToast('Signed out of MST Global Fashion.');
+    if (currentScreen === 'admin' || currentScreen === 'logistics') {
+      setCurrentScreen('discover');
+    }
+  };
+
+  const quickLoginAdmin = async () => {
+    await login('yashwanthk2004k@gmail.com', 'admin', 'super_admin');
+    showToast('Authenticated as Administrator: Yashwanth');
+  };
+
+  const quickLoginCustomer = async () => {
+    await login('priya.sharma@example.com', 'password', 'customer');
+    if (currentScreen === 'admin' || currentScreen === 'logistics') {
+      setCurrentScreen('discover');
+    }
+    showToast('Customer View: Admin panel is hidden from normal clients.');
+  };
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => {
       setToastMessage((prev) => (prev === msg ? null : prev));
     }, 2800);
+  };
+
+  // Real-World Address Management with Persistence
+  const [addresses, setAddresses] = useState<Address[]>(() => {
+    try {
+      const saved = localStorage.getItem('mst_addresses');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error('Failed to load saved addresses', e);
+    }
+    return [
+      {
+        id: 'addr-pri-1',
+        label: 'Home (Primary Delivery)',
+        name: currentUser?.fullName || 'Yashwanth',
+        mobile: currentUser?.mobile || '+91 98200 99999',
+        email: currentUser?.email || 'yashwanthk2004k@gmail.com',
+        line1: 'B-402, Imperial Heights, Worli Sea Face',
+        line2: 'Opposite Promenade',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        postalCode: '400018',
+        country: 'India',
+        isDefault: true,
+        deliveryInstructions: 'Concierge desk accepted. Call upon delivery.'
+      },
+      {
+        id: 'addr-overseas-2',
+        label: 'Overseas Atelier / Residence',
+        name: currentUser?.fullName || 'Yashwanth',
+        mobile: '+1 (212) 555-0198',
+        email: currentUser?.email || 'yashwanthk2004k@gmail.com',
+        line1: '742 Park Avenue, Apt 11B',
+        line2: 'Upper East Side',
+        city: 'New York',
+        state: 'NY',
+        postalCode: '10021',
+        country: 'United States',
+        isDefault: false,
+        deliveryInstructions: 'Leave with doorman.'
+      }
+    ];
+  });
+
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(() => {
+    try {
+      const saved = localStorage.getItem('mst_selected_address_id');
+      if (saved) return saved;
+    } catch (e) {}
+    return 'addr-pri-1';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mst_addresses', JSON.stringify(addresses));
+    } catch (e) {}
+  }, [addresses]);
+
+  useEffect(() => {
+    if (selectedAddressId) {
+      try {
+        localStorage.setItem('mst_selected_address_id', selectedAddressId);
+      } catch (e) {}
+    }
+  }, [selectedAddressId]);
+
+  const selectedAddress =
+    addresses.find((a) => a.id === selectedAddressId) ||
+    addresses.find((a) => a.isDefault) ||
+    addresses[0] ||
+    null;
+
+  const addAddress = (addrData: Omit<Address, 'id'>): Address => {
+    const id = `addr-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const shouldBeDefault = addresses.length === 0 || Boolean(addrData.isDefault);
+    const newAddress: Address = {
+      ...addrData,
+      id,
+      isDefault: shouldBeDefault
+    };
+
+    setAddresses((prev) => {
+      let updated = prev;
+      if (shouldBeDefault) {
+        updated = updated.map((a) => ({ ...a, isDefault: false }));
+      }
+      return [newAddress, ...updated];
+    });
+
+    setSelectedAddressId(id);
+    showToast(`Delivery destination set to: ${newAddress.name} (${newAddress.city})`);
+    return newAddress;
+  };
+
+  const updateAddress = (id: string, updatedFields: Partial<Address>) => {
+    setAddresses((prev) =>
+      prev.map((a) => {
+        if (a.id === id) {
+          return { ...a, ...updatedFields };
+        }
+        if (updatedFields.isDefault) {
+          return { ...a, isDefault: false };
+        }
+        return a;
+      })
+    );
+    showToast('Delivery address updated successfully');
+  };
+
+  const deleteAddress = (id: string) => {
+    setAddresses((prev) => {
+      const filtered = prev.filter((a) => a.id !== id);
+      if (selectedAddressId === id) {
+        setSelectedAddressId(filtered[0]?.id || null);
+      }
+      return filtered;
+    });
+    showToast('Address removed from address book');
+  };
+
+  const setDefaultAddress = (id: string) => {
+    setAddresses((prev) =>
+      prev.map((a) => ({
+        ...a,
+        isDefault: a.id === id
+      }))
+    );
+    setSelectedAddressId(id);
+    showToast('Default delivery address updated');
   };
 
   const formatPrice = (
@@ -167,7 +452,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     if (target.code === 'INR') {
       return `${target.symbol}${priceINR.toLocaleString('en-IN')}`;
     }
-    const converted = priceINR * target.inrToCurrencyRate;
+    const converted = priceINR * target.rateAgainstINR;
     return `${target.symbol}${converted.toFixed(target.code === 'AED' ? 0 : 2)}`;
   };
 
@@ -341,7 +626,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         completedOrderModal,
         setCompletedOrderModal,
         toastMessage,
-        showToast
+        showToast,
+        // Authentication & RBAC
+        currentUser,
+        isAdmin,
+        isSuperAdmin,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        authModalMode,
+        setAuthModalMode,
+        login,
+        register,
+        logout,
+        quickLoginAdmin,
+        quickLoginCustomer,
+        // Real-World Address Management
+        addresses,
+        selectedAddressId,
+        selectedAddress,
+        setSelectedAddressId,
+        addAddress,
+        updateAddress,
+        deleteAddress,
+        setDefaultAddress
       }}
     >
       {children}

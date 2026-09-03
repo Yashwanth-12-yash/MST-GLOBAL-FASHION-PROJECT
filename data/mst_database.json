@@ -1,0 +1,1962 @@
+{
+  "settings": {
+    "companyName": "Mobilesoft Technologies Pvt Ltd - MST Global Fashion",
+    "brandTagline": "Haute Couture Indian Heritage & Cross-Border Fashion House",
+    "logoUrl": "https://images.unsplash.com/photo-1544441893-675973e31985?w=200&auto=format&fit=crop&q=80",
+    "address": "MST Towers, Plot 44-A, Global Tech Hub, Bangalore, Karnataka 560100, India",
+    "email": "concierge@mstglobalfashion.com",
+    "phone": "+91 (0) 80 4912 8800",
+    "gstin": "29AAACM2241P1Z9",
+    "cin": "U72200KA2024PTC189201",
+    "baseCurrency": "INR",
+    "testMode": true,
+    "freeShippingThresholdINR": 1000,
+    "standardShippingFeeINR": 80,
+    "expressShippingFeeINR": 250
+  },
+  "currencies": [
+    {
+      "code": "INR",
+      "symbol": "₹",
+      "name": "Indian Rupee",
+      "rateAgainstINR": 1,
+      "autoRate": 1,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "USD",
+      "symbol": "$",
+      "name": "US Dollar",
+      "rateAgainstINR": 0.0116,
+      "autoRate": 0.0116,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "GBP",
+      "symbol": "£",
+      "name": "British Pound",
+      "rateAgainstINR": 0.0091,
+      "autoRate": 0.0091,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "EUR",
+      "symbol": "€",
+      "name": "Euro",
+      "rateAgainstINR": 0.0107,
+      "autoRate": 0.0107,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "AED",
+      "symbol": "AED",
+      "name": "UAE Dirham",
+      "rateAgainstINR": 0.0426,
+      "autoRate": 0.0426,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "SGD",
+      "symbol": "SGD $",
+      "name": "Singapore Dollar",
+      "rateAgainstINR": 0.0156,
+      "autoRate": 0.0156,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "MYR",
+      "symbol": "MYR RM",
+      "name": "Malaysian Ringgit",
+      "rateAgainstINR": 0.0514,
+      "autoRate": 0.0514,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "SAR",
+      "symbol": "SAR ﷼",
+      "name": "Saudi Riyal",
+      "rateAgainstINR": 0.0435,
+      "autoRate": 0.0435,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "AUD",
+      "symbol": "AUD $",
+      "name": "Australian Dollar",
+      "rateAgainstINR": 0.0178,
+      "autoRate": 0.0178,
+      "adminOverride": false,
+      "isActive": true
+    },
+    {
+      "code": "CAD",
+      "symbol": "CAD $",
+      "name": "Canadian Dollar",
+      "rateAgainstINR": 0.0158,
+      "autoRate": 0.0158,
+      "adminOverride": false,
+      "isActive": true
+    }
+  ],
+  "countries": [
+    {
+      "code": "IN",
+      "name": "India",
+      "defaultCurrency": "INR",
+      "zoneId": "zone-1",
+      "taxName": "GST (CGST+SGST/IGST)",
+      "taxRatePercent": 12,
+      "phoneCode": "+91",
+      "flag": "🇮🇳",
+      "shippingEnabled": true
+    },
+    {
+      "code": "AE",
+      "name": "United Arab Emirates",
+      "defaultCurrency": "AED",
+      "zoneId": "zone-2",
+      "taxName": "UAE VAT",
+      "taxRatePercent": 5,
+      "phoneCode": "+971",
+      "flag": "🇦🇪",
+      "shippingEnabled": true
+    },
+    {
+      "code": "SG",
+      "name": "Singapore",
+      "defaultCurrency": "SGD",
+      "zoneId": "zone-3",
+      "taxName": "GST",
+      "taxRatePercent": 9,
+      "phoneCode": "+65",
+      "flag": "🇸🇬",
+      "shippingEnabled": true
+    },
+    {
+      "code": "MY",
+      "name": "Malaysia",
+      "defaultCurrency": "MYR",
+      "zoneId": "zone-3",
+      "taxName": "SST",
+      "taxRatePercent": 8,
+      "phoneCode": "+60",
+      "flag": "🇲🇾",
+      "shippingEnabled": true
+    },
+    {
+      "code": "GB",
+      "name": "United Kingdom",
+      "defaultCurrency": "GBP",
+      "zoneId": "zone-4",
+      "taxName": "UK VAT",
+      "taxRatePercent": 20,
+      "phoneCode": "+44",
+      "flag": "🇬🇧",
+      "shippingEnabled": true
+    },
+    {
+      "code": "FR",
+      "name": "France (EU)",
+      "defaultCurrency": "EUR",
+      "zoneId": "zone-4",
+      "taxName": "TVA",
+      "taxRatePercent": 20,
+      "phoneCode": "+33",
+      "flag": "🇫🇷",
+      "shippingEnabled": true
+    },
+    {
+      "code": "DE",
+      "name": "Germany (EU)",
+      "defaultCurrency": "EUR",
+      "zoneId": "zone-4",
+      "taxName": "MwSt",
+      "taxRatePercent": 19,
+      "phoneCode": "+49",
+      "flag": "🇩🇪",
+      "shippingEnabled": true
+    },
+    {
+      "code": "US",
+      "name": "United States",
+      "defaultCurrency": "USD",
+      "zoneId": "zone-5",
+      "taxName": "State Sales Tax",
+      "taxRatePercent": 7,
+      "phoneCode": "+1",
+      "flag": "🇺🇸",
+      "shippingEnabled": true
+    },
+    {
+      "code": "CA",
+      "name": "Canada",
+      "defaultCurrency": "CAD",
+      "zoneId": "zone-5",
+      "taxName": "HST/GST",
+      "taxRatePercent": 13,
+      "phoneCode": "+1",
+      "flag": "🇨🇦",
+      "shippingEnabled": true
+    },
+    {
+      "code": "SA",
+      "name": "Saudi Arabia",
+      "defaultCurrency": "SAR",
+      "zoneId": "zone-2",
+      "taxName": "KSA VAT",
+      "taxRatePercent": 15,
+      "phoneCode": "+966",
+      "flag": "🇸🇦",
+      "shippingEnabled": true
+    },
+    {
+      "code": "AU",
+      "name": "Australia",
+      "defaultCurrency": "AUD",
+      "zoneId": "zone-6",
+      "taxName": "GST",
+      "taxRatePercent": 10,
+      "phoneCode": "+61",
+      "flag": "🇦🇺",
+      "shippingEnabled": true
+    }
+  ],
+  "taxRules": [
+    {
+      "id": "tax-in",
+      "countryCode": "IN",
+      "taxName": "Indian GST (Apparel > ₹1000: 12%, ≤ ₹1000: 5%)",
+      "cgstPercent": 6,
+      "sgstPercent": 6,
+      "igstPercent": 12,
+      "effectiveDate": "2026-01-01"
+    },
+    {
+      "id": "tax-us",
+      "countryCode": "US",
+      "taxName": "US Import Duty & State Sales Tax (DDP Cleared)",
+      "vatPercent": 7,
+      "effectiveDate": "2026-01-01"
+    },
+    {
+      "id": "tax-gb",
+      "countryCode": "GB",
+      "taxName": "UK Value Added Tax (HMRC Registered DDP)",
+      "vatPercent": 20,
+      "effectiveDate": "2026-01-01"
+    },
+    {
+      "id": "tax-eu",
+      "countryCode": "FR",
+      "taxName": "EU Import One-Stop Shop (IOSS VAT)",
+      "vatPercent": 20,
+      "effectiveDate": "2026-01-01"
+    },
+    {
+      "id": "tax-ae",
+      "countryCode": "AE",
+      "taxName": "GCC / UAE Standard VAT",
+      "vatPercent": 5,
+      "effectiveDate": "2026-01-01"
+    },
+    {
+      "id": "tax-sg",
+      "countryCode": "SG",
+      "taxName": "Singapore Goods & Services Tax (IRAS)",
+      "vatPercent": 9,
+      "effectiveDate": "2026-01-01"
+    }
+  ],
+  "shippingZones": [
+    {
+      "id": "zone-1",
+      "name": "Zone 1 - Domestic India",
+      "countries": [
+        "IN"
+      ],
+      "methods": [
+        {
+          "id": "m-in-std",
+          "name": "Standard Courier (Blue Dart / Delhivery)",
+          "estimatedDays": "3–5 days",
+          "baseFeeINR": 80,
+          "perKgFeeINR": 40,
+          "freeThresholdINR": 1000
+        },
+        {
+          "id": "m-in-exp",
+          "name": "Express Air Courier (Air Freight)",
+          "estimatedDays": "1–2 days",
+          "baseFeeINR": 180,
+          "perKgFeeINR": 80,
+          "freeThresholdINR": 5000
+        }
+      ]
+    },
+    {
+      "id": "zone-2",
+      "name": "Zone 2 - UAE & Middle East",
+      "countries": [
+        "AE",
+        "SA"
+      ],
+      "methods": [
+        {
+          "id": "m-gulf-std",
+          "name": "Aramex International Standard",
+          "estimatedDays": "5–8 days",
+          "baseFeeINR": 950,
+          "perKgFeeINR": 300,
+          "freeThresholdINR": 15000
+        },
+        {
+          "id": "m-gulf-exp",
+          "name": "DHL Express Worldwide (DDP Doorstep)",
+          "estimatedDays": "2–4 days",
+          "baseFeeINR": 1800,
+          "perKgFeeINR": 450,
+          "freeThresholdINR": 30000
+        }
+      ]
+    },
+    {
+      "id": "zone-3",
+      "name": "Zone 3 - Southeast Asia (SG & MY)",
+      "countries": [
+        "SG",
+        "MY"
+      ],
+      "methods": [
+        {
+          "id": "m-sea-std",
+          "name": "SingPost / Pos Laju Registered Air",
+          "estimatedDays": "6–9 days",
+          "baseFeeINR": 1100,
+          "perKgFeeINR": 350,
+          "freeThresholdINR": 18000
+        },
+        {
+          "id": "m-sea-exp",
+          "name": "DHL Express Priority Air",
+          "estimatedDays": "3–5 days",
+          "baseFeeINR": 1950,
+          "perKgFeeINR": 480,
+          "freeThresholdINR": 32000
+        }
+      ]
+    },
+    {
+      "id": "zone-4",
+      "name": "Zone 4 - UK & Europe",
+      "countries": [
+        "GB",
+        "FR",
+        "DE"
+      ],
+      "methods": [
+        {
+          "id": "m-eu-std",
+          "name": "Royal Mail / DPD Tracked International",
+          "estimatedDays": "7–12 days",
+          "baseFeeINR": 1400,
+          "perKgFeeINR": 450,
+          "freeThresholdINR": 22000
+        },
+        {
+          "id": "m-eu-exp",
+          "name": "DHL Express Jetline (Customs Pre-Cleared DDP)",
+          "estimatedDays": "3–5 days",
+          "baseFeeINR": 2400,
+          "perKgFeeINR": 600,
+          "freeThresholdINR": 38000
+        }
+      ]
+    },
+    {
+      "id": "zone-5",
+      "name": "Zone 5 - North America (USA & Canada)",
+      "countries": [
+        "US",
+        "CA"
+      ],
+      "methods": [
+        {
+          "id": "m-us-std",
+          "name": "FedEx International Ground Tracked",
+          "estimatedDays": "7–12 days",
+          "baseFeeINR": 1500,
+          "perKgFeeINR": 450,
+          "freeThresholdINR": 25000
+        },
+        {
+          "id": "m-us-exp",
+          "name": "DHL Express Worldwide Jet Courier",
+          "estimatedDays": "3–5 days",
+          "baseFeeINR": 2600,
+          "perKgFeeINR": 650,
+          "freeThresholdINR": 40000
+        }
+      ]
+    },
+    {
+      "id": "zone-6",
+      "name": "Zone 6 - Australia & Pacific",
+      "countries": [
+        "AU"
+      ],
+      "methods": [
+        {
+          "id": "m-au-std",
+          "name": "Australia Post Global Tracked",
+          "estimatedDays": "8–14 days",
+          "baseFeeINR": 1600,
+          "perKgFeeINR": 500,
+          "freeThresholdINR": 26000
+        },
+        {
+          "id": "m-au-exp",
+          "name": "DHL Express Air Courier",
+          "estimatedDays": "4–6 days",
+          "baseFeeINR": 2700,
+          "perKgFeeINR": 700,
+          "freeThresholdINR": 42000
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-sarees",
+      "name": "Sarees",
+      "slug": "sarees",
+      "description": "Master handloom pure silk, Banarasi, Kanjeevaram, Organza, and Chanderi sarees.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCK_RkI8a_sK9-lCffq9_2V90F3Z1215M8y3Rrk5h-qA8gL8gP9k8Z08R1-81781289381239812938129381923891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238",
+      "seoTitle": "Designer Pure Silk Sarees | Authentic Handloom Banarasi & Katan",
+      "seoDescription": "Shop certified Silk Mark hand-woven sarees with real silver electroplated 24K zari bullion.",
+      "displayOrder": 1,
+      "isActive": true,
+      "subcategories": [
+        "Banarasi Katan Silk",
+        "Kanjeevaram Pattu",
+        "Tussar & Chanderi",
+        "Tissue Organza",
+        "Ruffled Modern Sarees"
+      ]
+    },
+    {
+      "id": "cat-lehengas",
+      "name": "Bridal Lehengas",
+      "slug": "lehengas",
+      "description": "Hand-embroidered heritage bridal couture with real metal zardozi and heirloom flair.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuAMHYuHfCmRab2TMBrgBum-YFzIVk1oY4xvdolkp8XA7ugn3gR4eAmrf3ZJ-nUG1eOGjKVlhCPa4-VVgJ5W-WJDQ0ZDvPkbcoFRYmH1XeKKYIkvqWqbxy_kM3nvP8eM6swHlFfQFoLuL6xQF90y_2mK24ek1Sl3A7gvBRWIerlh-Eo7lV2Gf1_a3qeofao9PJHTRiPd1p0dRV_9ncQ_2rhCMbVj_u40JC46FM9oz7Xj09h4SKqqD4XI",
+      "seoTitle": "Handcrafted Bridal Lehengas | Royal Zardozi Wedding Couture",
+      "seoDescription": "Master bridal ensembles made with pure bullion zari, swarovski crystals, and custom tailored blouses.",
+      "displayOrder": 2,
+      "isActive": true,
+      "subcategories": [
+        "Imperial Red Bridal",
+        "Pastel Blossom Lehengas",
+        "Velvet Winter Couture",
+        "Cocktail Sequin Skirts"
+      ]
+    },
+    {
+      "id": "cat-dresses",
+      "name": "Dresses & Anarkalis",
+      "slug": "dresses",
+      "description": "Contemporary evening gowns, floor-sweeping anarkalis, and Indo-western fusion gowns.",
+      "imageUrl": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&auto=format&fit=crop&q=80",
+      "seoTitle": "Designer Anarkalis & Haute Gowns | Global Runway Couture",
+      "seoDescription": "Luxurious floor-length silhouettes, structured corsetry, and tonal embroidery.",
+      "displayOrder": 3,
+      "isActive": true,
+      "subcategories": [
+        "Nocturne Velvet Anarkalis",
+        "Silk Crepe Gowns",
+        "Tiered Georgette Fits",
+        "Cape Drape Ensembles"
+      ]
+    },
+    {
+      "id": "cat-kurtis",
+      "name": "Kurtis & Suits",
+      "slug": "kurtis",
+      "description": "Salwar suits, sharara sets, kaftans, and tailored everyday luxury kurtis.",
+      "imageUrl": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800&auto=format&fit=crop&q=80",
+      "seoTitle": "Handcrafted Designer Kurtis & Sharara Sets | MST Fashion",
+      "seoDescription": "Elegant handloom cotton and chanderi silk salwar suits featuring Lucknowi Chikankari.",
+      "displayOrder": 4,
+      "isActive": true,
+      "subcategories": [
+        "Lucknowi Chikankari",
+        "Angrakha Tunics",
+        "Silk Straight Kurtis",
+        "Sharara Sets"
+      ]
+    },
+    {
+      "id": "cat-menswear",
+      "name": "Men's Wear",
+      "slug": "mens-wear",
+      "description": "Royal sherwanis, bandhgalas, raw silk kurtas, and handcrafted brocade jackets.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDSai4mnkjBBXlJogvWOntp00DUK_eKCjanr1_OOWOwtkpry_LVq7w1Y9FjOxwynaRykqU3PrMArPczVF_JM2eR9ct62QrPuqsMZgsab316vL1tZ68oEtB1lIfhum8UA4VQskste_V8GutH1smK80WuUeUIzzF6MPUTPYzV5w7z0mBqthB85eK5wLPb5kOWAWodqS_kDsPbp1Vz-OX2G-nix60CdH-kXnkEkJ43I7482-w2zOj6VmIl",
+      "seoTitle": "Men's Royal Sherwanis & Bandhgalas | Groom Luxury Collection",
+      "seoDescription": "Regal ivory and velvet sherwanis adorned with tonal resham embroidery and handcrafted brass buttons.",
+      "displayOrder": 5,
+      "isActive": true,
+      "subcategories": [
+        "Ivory Wedding Sherwanis",
+        "Velvet Bandhgala Suits",
+        "Handloom Matka Kurtas",
+        "Nehru Jackets"
+      ]
+    },
+    {
+      "id": "cat-jewelry",
+      "name": "High Jewelry",
+      "slug": "high-jewelry",
+      "description": "Polki kundan, temple meenakari, natural emerald chokers, and royal bridal ornaments.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDKtK8zSGo5CUOG04IaWN8uuCh59h3IFrvccA5kC_ESm2OXpiADLpfg0cepdR3NY00NDMs2ypjx1DoeL494uHojYQ_tH5QgJ9NlD64f05AByfBTHAFxIkd_TErz-dxYrse01b9cEXc4dze5BrvmTX5VHsHEPaWy3jsN8LjTXnA-z_ILCpKgwH1RoOo6mBkm0TvulZDunxJk1zLFXIJMOOoGqCGZJ_4W238XLsuoY-2TojqRPEZu81EQ",
+      "seoTitle": "Nizam Polki Kundan Jewelry & Choker Sets | Heritage Ornaments",
+      "seoDescription": "24K gold micron plated temple chokers hand-set with uncut polki kundan and freshwater pearls.",
+      "displayOrder": 6,
+      "isActive": true,
+      "subcategories": [
+        "Polki Chokers",
+        "Chandbali Earrings",
+        "Mathapatti Headpieces",
+        "Haathphool Ornaments"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-aurum-saree",
+      "name": "The Aurum Heritage Silk Saree",
+      "sku": "MST-SKU-9901-SAR",
+      "productCode": "MS-SAREE-1001",
+      "categoryId": "cat-sarees",
+      "categoryName": "Sarees",
+      "subcategory": "Banarasi Katan Silk",
+      "brand": "MST Atelier Global",
+      "description": "Woven over 90 days on traditional Varanasi pit looms using pure mulberry katan silk. Adorned with certified 24K electroplated silver bullion zari forming delicate Persian shikargah motifs along the scalloped border.",
+      "shortDescription": "Certified Silk Mark Banarasi Katan pure silk saree with real gold bullion zari.",
+      "productType": "Apparel / Saree",
+      "gender": "Women",
+      "collection": "The Royal Heritage 2026",
+      "tags": [
+        "Silk Mark",
+        "Handloom",
+        "Bridal",
+        "Banarasi",
+        "Pure Zari"
+      ],
+      "basePriceINR": 28500,
+      "mrpINR": 35000,
+      "discountPercent": 18,
+      "primaryImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuCK_RkI8a_sK9-lCffq9_2V90F3Z1215M8y3Rrk5h-qA8gL8gP9k8Z08R1-81781289381239812938129381923891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238912389123891238",
+      "galleryImages": [
+        "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=1000&auto=format&fit=crop&q=80"
+      ],
+      "has360View": true,
+      "status": "Active",
+      "rating": 4.9,
+      "reviewCount": 124,
+      "weightKg": 1.1,
+      "fabricBase": "100% Pure Katan Mulberry Silk (Silk Mark Certified)",
+      "zariComposition": "Real Silver Bullion Electroplated in 24 Karat Gold",
+      "weavingTechnique": "Kadhwa Hand-Loom Weaving (90 Artisan Days)",
+      "careInstructions": [
+        "Haute Dry Clean Only",
+        "Store rolled in breathable cotton muslin sleeve",
+        "Avoid direct spray of perfumes"
+      ],
+      "shippingNotes": [
+        "Complimentary international express air transit via DHL Express",
+        "Pre-cleared customs with zero hidden destination tariffs"
+      ],
+      "seoTitle": "The Aurum Heritage Silk Saree | Master Weaver Banarasi Katan",
+      "seoDescription": "Handcrafted Varanasi pit loom saree with certified real gold zari bullion. Available worldwide with free express shipping.",
+      "urlSlug": "the-aurum-heritage-silk-saree",
+      "createdAt": "2026-01-10T10:00:00Z",
+      "updatedAt": "2026-02-28T14:30:00Z"
+    },
+    {
+      "id": "prod-lehenga-gulzar",
+      "name": "Gulzar Crimson Zardozi Lehenga",
+      "sku": "MST-SKU-7721-LEH",
+      "productCode": "MS-LEH-2002",
+      "categoryId": "cat-lehengas",
+      "categoryName": "Bridal Lehengas",
+      "subcategory": "Imperial Red Bridal",
+      "brand": "MST Atelier Global",
+      "description": "Master atelier heritage bridal lehenga featuring 16 kalis with a full 6-meter royal flare. Hand-embroidered in Old Delhi with bullion dabka, cutdana, seed pearls, and uncut stones, complete with double organza dupattas.",
+      "shortDescription": "Royal vermillion bridal lehenga with heavy pure zardozi needlework.",
+      "productType": "Apparel / Lehenga",
+      "gender": "Women",
+      "collection": "The Royal Heritage 2026",
+      "tags": [
+        "Bridal",
+        "Zardozi",
+        "Handcrafted",
+        "Heirloom",
+        "Royal"
+      ],
+      "basePriceINR": 145000,
+      "mrpINR": 175000,
+      "discountPercent": 17,
+      "primaryImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuAMHYuHfCmRab2TMBrgBum-YFzIVk1oY4xvdolkp8XA7ugn3gR4eAmrf3ZJ-nUG1eOGjKVlhCPa4-VVgJ5W-WJDQ0ZDvPkbcoFRYmH1XeKKYIkvqWqbxy_kM3nvP8eM6swHlFfQFoLuL6xQF90y_2mK24ek1Sl3A7gvBRWIerlh-Eo7lV2Gf1_a3qeofao9PJHTRiPd1p0dRV_9ncQ_2rhCMbVj_u40JC46FM9oz7Xj09h4SKqqD4XI",
+      "galleryImages": [
+        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=1000&auto=format&fit=crop&q=80"
+      ],
+      "has360View": true,
+      "status": "Active",
+      "rating": 5,
+      "reviewCount": 78,
+      "weightKg": 4.8,
+      "fabricBase": "Heavy Hand-Spun Raw Silk & Hand-Woven Organza Dupatta",
+      "zariComposition": "Real Silver Bullion Electroplated in 24K Gold & Seed Pearls",
+      "weavingTechnique": "Pure Zardozi, Marodi & Pitta Needlework",
+      "careInstructions": [
+        "Haute Specialist Dry Clean Only",
+        "Store inside acid-free preservation heirloom box"
+      ],
+      "shippingNotes": [
+        "Bespoke tailoring timeline: 14 business days",
+        "Armored DHL courier delivery"
+      ],
+      "seoTitle": "Gulzar Crimson Zardozi Lehenga | Imperial Bridal Couture",
+      "seoDescription": "Opulent crimson bridal lehenga hand-crafted by Old Delhi master artisans with 24K gold bullion zardozi.",
+      "urlSlug": "gulzar-crimson-zardozi-lehenga",
+      "createdAt": "2026-01-15T12:00:00Z",
+      "updatedAt": "2026-02-25T16:00:00Z"
+    },
+    {
+      "id": "prod-anarkali-nocturne",
+      "name": "Nocturne Midnight Velvet Anarkali",
+      "sku": "MST-SKU-8810-ANK",
+      "productCode": "MS-ANK-3003",
+      "categoryId": "cat-dresses",
+      "categoryName": "Dresses & Anarkalis",
+      "subcategory": "Nocturne Velvet Anarkalis",
+      "brand": "MST Atelier Global",
+      "description": "Sculpted deep midnight blue micro-velvet tailored into a structured corset bodice with 32 Kalis flare, hand-embroidered with French knot resham and antique micro-marodi borders.",
+      "shortDescription": "Deep midnight blue micro-velvet floor length couture anarkali ensemble.",
+      "productType": "Apparel / Anarkali",
+      "gender": "Women",
+      "collection": "Atelier Nocturne",
+      "tags": [
+        "Velvet",
+        "Evening Gown",
+        "Anarkali",
+        "Cocktail",
+        "Winter Couture"
+      ],
+      "basePriceINR": 42000,
+      "mrpINR": 52000,
+      "discountPercent": 19,
+      "primaryImage": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=1000&auto=format&fit=crop&q=80",
+      "galleryImages": [],
+      "has360View": false,
+      "status": "Active",
+      "rating": 4.8,
+      "reviewCount": 64,
+      "weightKg": 2.2,
+      "fabricBase": "Imported Japanese Micro-Velvet & Tissue Chiffon",
+      "zariComposition": "Tonal Resham Silk & Muted Antique Dabka",
+      "weavingTechnique": "Master Cutter Bias Tailoring with Hand Needlework",
+      "careInstructions": [
+        "Professional Dry Clean Only",
+        "Steam press inside out"
+      ],
+      "shippingNotes": [
+        "Ready to dispatch in 48 hours via express air courier"
+      ],
+      "seoTitle": "Nocturne Midnight Velvet Anarkali | Haute Evening Wear",
+      "seoDescription": "Flawlessly tailored midnight micro-velvet anarkali with royal flare and resham needlework.",
+      "urlSlug": "nocturne-midnight-velvet-anarkali",
+      "createdAt": "2026-01-18T08:00:00Z",
+      "updatedAt": "2026-02-27T11:00:00Z"
+    },
+    {
+      "id": "prod-sherwani-sheesh",
+      "name": "Sheesh Mahal Ivory Raw Silk Sherwani",
+      "sku": "MST-SKU-5512-SHR",
+      "productCode": "MS-SHR-4004",
+      "categoryId": "cat-menswear",
+      "categoryName": "Men's Wear",
+      "subcategory": "Ivory Wedding Sherwanis",
+      "brand": "MST Atelier Global",
+      "description": "Royal groom sherwani hand-tailored from hand-spun Matka raw silk. Embellished with tone-on-tone Lucknowi jaal needlework and hand-carved solid brass filigree buttons.",
+      "shortDescription": "Regal hand-spun raw silk groom sherwani with tonal resham jaal.",
+      "productType": "Apparel / Men's Sherwani",
+      "gender": "Men",
+      "collection": "The Royal Groom 2026",
+      "tags": [
+        "Groom",
+        "Sherwani",
+        "Raw Silk",
+        "Royal",
+        "Menswear"
+      ],
+      "basePriceINR": 58000,
+      "mrpINR": 68000,
+      "discountPercent": 15,
+      "primaryImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuDSai4mnkjBBXlJogvWOntp00DUK_eKCjanr1_OOWOwtkpry_LVq7w1Y9FjOxwynaRykqU3PrMArPczVF_JM2eR9ct62QrPuqsMZgsab316vL1tZ68oEtB1lIfhum8UA4VQskste_V8GutH1smK80WuUeUIzzF6MPUTPYzV5w7z0mBqthB85eK5wLPb5kOWAWodqS_kDsPbp1Vz-OX2G-nix60CdH-kXnkEkJ43I7482-w2zOj6VmIl",
+      "galleryImages": [],
+      "has360View": false,
+      "status": "Active",
+      "rating": 4.9,
+      "reviewCount": 52,
+      "weightKg": 2.6,
+      "fabricBase": "100% Hand-Spun Matka Raw Silk",
+      "zariComposition": "Fine Resham Silk & Muted Champagne Metal Thread",
+      "weavingTechnique": "Tonal Jaal Needlework with Hand-Carved Brass Buttons",
+      "careInstructions": [
+        "Haute Dry Clean Only",
+        "Store inside padded breathable garment sleeve"
+      ],
+      "shippingNotes": [
+        "Includes matching churidar, silk pocket square, and tissue stole"
+      ],
+      "seoTitle": "Sheesh Mahal Ivory Sherwani | Men's Royal Groom Couture",
+      "seoDescription": "Hand-tailored ivory raw silk groom sherwani with intricate resham needlework. Global door-to-door courier.",
+      "urlSlug": "sheesh-mahal-ivory-raw-silk-sherwani",
+      "createdAt": "2026-01-20T14:00:00Z",
+      "updatedAt": "2026-02-28T09:00:00Z"
+    },
+    {
+      "id": "prod-polki-choker",
+      "name": "Nizam Polki Kundan Choker & Earrings Set",
+      "sku": "MST-SKU-3321-JWL",
+      "productCode": "MS-JWL-5005",
+      "categoryId": "cat-jewelry",
+      "categoryName": "High Jewelry",
+      "subcategory": "Polki Chokers",
+      "brand": "MST Atelier Global",
+      "description": "Hand-set uncut polki kundan stones framed by natural freshwater pearls and Zambian emerald tumble drops. Reverse side features traditional red and green Meenakari enameling.",
+      "shortDescription": "24K Micron Gold Plated Jadau temple choker with natural pearls and emerald drops.",
+      "productType": "Jewelry / Choker",
+      "gender": "Women",
+      "collection": "High Jewelry Atelier",
+      "tags": [
+        "Polki",
+        "Kundan",
+        "Choker",
+        "Bridal Jewelry",
+        "Meenakari"
+      ],
+      "basePriceINR": 14200,
+      "mrpINR": 18000,
+      "discountPercent": 21,
+      "primaryImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuDKtK8zSGo5CUOG04IaWN8uuCh59h3IFrvccA5kC_ESm2OXpiADLpfg0cepdR3NY00NDMs2ypjx1DoeL494uHojYQ_tH5QgJ9NlD64f05AByfBTHAFxIkd_TErz-dxYrse01b9cEXc4dze5BrvmTX5VHsHEPaWy3jsN8LjTXnA-z_ILCpKgwH1RoOo6mBkm0TvulZDunxJk1zLFXIJMOOoGqCGZJ_4W238XLsuoY-2TojqRPEZu81EQ",
+      "galleryImages": [],
+      "has360View": false,
+      "status": "Active",
+      "rating": 4.9,
+      "reviewCount": 41,
+      "weightKg": 0.45,
+      "fabricBase": "Brass Core with 24K Gold Micron Hallmarked Plating",
+      "zariComposition": "Pure Gold Foil Setting & Hand-Strung Freshwater Pearls",
+      "weavingTechnique": "Traditional Jadau Setting & Meenakari Enameling",
+      "careInstructions": [
+        "Keep away from moisture, hairspray, and perfumes",
+        "Store in plush velvet anti-tarnish jewelry pouch"
+      ],
+      "shippingNotes": [
+        "Ships inside custom locked tamper-evident jewelry vault box"
+      ],
+      "seoTitle": "Nizam Polki Kundan Choker Set | Royal Temple High Jewelry",
+      "seoDescription": "Artisanal Jadau choker set hand-set with uncut polki kundan and natural pearls. Complete with matching earrings.",
+      "urlSlug": "nizam-polki-kundan-choker-set",
+      "createdAt": "2026-01-22T11:00:00Z",
+      "updatedAt": "2026-02-26T18:00:00Z"
+    },
+    {
+      "id": "prod-suit-chikankari",
+      "name": "Gulmohar Chikankari Georgette Sharara Suit",
+      "sku": "MST-SKU-4419-SUI",
+      "productCode": "MS-SUI-6006",
+      "categoryId": "cat-kurtis",
+      "categoryName": "Kurtis & Suits",
+      "subcategory": "Sharara Sets",
+      "brand": "MST Atelier Global",
+      "description": "Hand-embroidered Lucknowi Chikankari in intricate Bakhiya, Phanda, and Keel Kangan stitches on featherlight viscose georgette, embellished with mukaish metal specks and finished with matching flared sharara.",
+      "shortDescription": "Featherlight peach georgette hand-embroidered Lucknowi chikankari suit set.",
+      "productType": "Apparel / Sharara Suit",
+      "gender": "Women",
+      "collection": "Lucknow Atelier",
+      "tags": [
+        "Chikankari",
+        "Sharara",
+        "Handloom",
+        "Pastel",
+        "Festive"
+      ],
+      "basePriceINR": 18500,
+      "mrpINR": 23000,
+      "discountPercent": 20,
+      "primaryImage": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=1000&auto=format&fit=crop&q=80",
+      "galleryImages": [],
+      "has360View": false,
+      "status": "Active",
+      "rating": 4.7,
+      "reviewCount": 39,
+      "weightKg": 1.2,
+      "fabricBase": "Featherlight Viscose Georgette with Pure Silk Slip",
+      "zariComposition": "Silver Mukaish Metal Droplets & Pure Cotton Thread",
+      "weavingTechnique": "Authentic 32-Stitch Awadhi Chikankari Hand Needlework",
+      "careInstructions": [
+        "Dry Clean Only",
+        "Steam Iron with protective fabric layer"
+      ],
+      "shippingNotes": [
+        "Ships within 2 business days"
+      ],
+      "seoTitle": "Gulmohar Lucknowi Chikankari Sharara Suit | MST Fashion",
+      "seoDescription": "Hand-crafted Awadhi chikankari georgette sharara suit featuring mukaish work and pure cotton embroidery.",
+      "urlSlug": "gulmohar-chikankari-georgette-sharara-suit",
+      "createdAt": "2026-01-25T15:00:00Z",
+      "updatedAt": "2026-02-27T10:00:00Z"
+    }
+  ],
+  "variants": [
+    {
+      "id": "var-sar-1",
+      "productId": "prod-aurum-saree",
+      "sku": "MST-SAR-1001-GLD-UN",
+      "size": "Unstitched Standard",
+      "colorName": "Antique Imperial Gold",
+      "colorHex": "#C9A050",
+      "priceDeltaINR": 0,
+      "stock": 12,
+      "reservedStock": 2,
+      "weightKg": 1.1,
+      "barcode": "890123450001"
+    },
+    {
+      "id": "var-sar-2",
+      "productId": "prod-aurum-saree",
+      "sku": "MST-SAR-1001-GLD-BS",
+      "size": "Bespoke Tailored Blouse",
+      "colorName": "Antique Imperial Gold",
+      "colorHex": "#C9A050",
+      "priceDeltaINR": 3500,
+      "stock": 8,
+      "reservedStock": 1,
+      "weightKg": 1.3,
+      "barcode": "890123450002"
+    },
+    {
+      "id": "var-sar-3",
+      "productId": "prod-aurum-saree",
+      "sku": "MST-SAR-1001-RBY-UN",
+      "size": "Unstitched Standard",
+      "colorName": "Royal Vermillion Crimson",
+      "colorHex": "#9E182B",
+      "priceDeltaINR": 0,
+      "stock": 5,
+      "reservedStock": 0,
+      "weightKg": 1.1,
+      "barcode": "890123450003"
+    },
+    {
+      "id": "var-sar-4",
+      "productId": "prod-aurum-saree",
+      "sku": "MST-SAR-1001-EME-UN",
+      "size": "Unstitched Standard",
+      "colorName": "Nizam Emerald Weave",
+      "colorHex": "#1F4E38",
+      "priceDeltaINR": 0,
+      "stock": 4,
+      "reservedStock": 1,
+      "weightKg": 1.1,
+      "barcode": "890123450004"
+    },
+    {
+      "id": "var-leh-1",
+      "productId": "prod-lehenga-gulzar",
+      "sku": "MST-LEH-2002-RED-S",
+      "size": "S (Waist 28\")",
+      "colorName": "Imperial Vermillion",
+      "colorHex": "#8B0000",
+      "priceDeltaINR": 0,
+      "stock": 3,
+      "reservedStock": 1,
+      "weightKg": 4.8,
+      "barcode": "890123450005"
+    },
+    {
+      "id": "var-leh-2",
+      "productId": "prod-lehenga-gulzar",
+      "sku": "MST-LEH-2002-RED-M",
+      "size": "M (Waist 30\")",
+      "colorName": "Imperial Vermillion",
+      "colorHex": "#8B0000",
+      "priceDeltaINR": 0,
+      "stock": 4,
+      "reservedStock": 0,
+      "weightKg": 4.8,
+      "barcode": "890123450006"
+    },
+    {
+      "id": "var-leh-3",
+      "productId": "prod-lehenga-gulzar",
+      "sku": "MST-LEH-2002-RED-L",
+      "size": "L (Waist 34\")",
+      "colorName": "Imperial Vermillion",
+      "colorHex": "#8B0000",
+      "priceDeltaINR": 0,
+      "stock": 2,
+      "reservedStock": 0,
+      "weightKg": 4.8,
+      "barcode": "890123450007"
+    },
+    {
+      "id": "var-leh-4",
+      "productId": "prod-lehenga-gulzar",
+      "sku": "MST-LEH-2002-RED-CST",
+      "size": "Custom Bespoke Fit",
+      "colorName": "Imperial Vermillion",
+      "colorHex": "#8B0000",
+      "priceDeltaINR": 5000,
+      "stock": 5,
+      "reservedStock": 2,
+      "weightKg": 5,
+      "barcode": "890123450008"
+    },
+    {
+      "id": "var-ank-1",
+      "productId": "prod-anarkali-nocturne",
+      "sku": "MST-ANK-3003-NVY-S",
+      "size": "S",
+      "colorName": "Heritage Midnight Navy",
+      "colorHex": "#111E38",
+      "priceDeltaINR": 0,
+      "stock": 6,
+      "reservedStock": 1,
+      "weightKg": 2.2,
+      "barcode": "890123450009"
+    },
+    {
+      "id": "var-ank-2",
+      "productId": "prod-anarkali-nocturne",
+      "sku": "MST-ANK-3003-NVY-M",
+      "size": "M",
+      "colorName": "Heritage Midnight Navy",
+      "colorHex": "#111E38",
+      "priceDeltaINR": 0,
+      "stock": 9,
+      "reservedStock": 2,
+      "weightKg": 2.2,
+      "barcode": "890123450010"
+    },
+    {
+      "id": "var-ank-3",
+      "productId": "prod-anarkali-nocturne",
+      "sku": "MST-ANK-3003-NVY-L",
+      "size": "L",
+      "colorName": "Heritage Midnight Navy",
+      "colorHex": "#111E38",
+      "priceDeltaINR": 0,
+      "stock": 7,
+      "reservedStock": 0,
+      "weightKg": 2.2,
+      "barcode": "890123450011"
+    },
+    {
+      "id": "var-shr-1",
+      "productId": "prod-sherwani-sheesh",
+      "sku": "MST-SHR-4004-IVR-38",
+      "size": "38 (Chest 38\")",
+      "colorName": "Warm Ivory Champagne",
+      "colorHex": "#EDE8D0",
+      "priceDeltaINR": 0,
+      "stock": 5,
+      "reservedStock": 0,
+      "weightKg": 2.6,
+      "barcode": "890123450012"
+    },
+    {
+      "id": "var-shr-2",
+      "productId": "prod-sherwani-sheesh",
+      "sku": "MST-SHR-4004-IVR-40",
+      "size": "40 (Chest 40\")",
+      "colorName": "Warm Ivory Champagne",
+      "colorHex": "#EDE8D0",
+      "priceDeltaINR": 0,
+      "stock": 6,
+      "reservedStock": 1,
+      "weightKg": 2.6,
+      "barcode": "890123450013"
+    },
+    {
+      "id": "var-shr-3",
+      "productId": "prod-sherwani-sheesh",
+      "sku": "MST-SHR-4004-IVR-42",
+      "size": "42 (Chest 42\")",
+      "colorName": "Warm Ivory Champagne",
+      "colorHex": "#EDE8D0",
+      "priceDeltaINR": 0,
+      "stock": 3,
+      "reservedStock": 0,
+      "weightKg": 2.6,
+      "barcode": "890123450014"
+    },
+    {
+      "id": "var-jwl-1",
+      "productId": "prod-polki-choker",
+      "sku": "MST-JWL-5005-GLD-STD",
+      "size": "Standard (Adjustable Dori)",
+      "colorName": "24K Micron Gold Plated",
+      "colorHex": "#D4AF37",
+      "priceDeltaINR": 0,
+      "stock": 15,
+      "reservedStock": 2,
+      "weightKg": 0.45,
+      "barcode": "890123450015"
+    }
+  ],
+  "warehouses": [
+    {
+      "id": "wh-mum",
+      "code": "WH-IN-MUM-01",
+      "name": "MST Central Atelier Hub",
+      "city": "Mumbai",
+      "country": "India",
+      "isPrimary": true
+    },
+    {
+      "id": "wh-del",
+      "code": "WH-IN-DEL-02",
+      "name": "MST Heritage Vault",
+      "city": "New Delhi",
+      "country": "India",
+      "isPrimary": false
+    },
+    {
+      "id": "wh-lon",
+      "code": "WH-GB-LON-01",
+      "name": "MST Europe Logistics Hub",
+      "city": "London",
+      "country": "United Kingdom",
+      "isPrimary": false
+    },
+    {
+      "id": "wh-dxb",
+      "code": "WH-AE-DXB-01",
+      "name": "MST Gulf Express Center",
+      "city": "Dubai",
+      "country": "UAE",
+      "isPrimary": false
+    },
+    {
+      "id": "wh-nyc",
+      "code": "WH-US-NYC-01",
+      "name": "MST North America Hub",
+      "city": "New York",
+      "country": "USA",
+      "isPrimary": false
+    }
+  ],
+  "inventory": [
+    {
+      "id": "inv-1",
+      "sku": "MST-SAR-1001-GLD-UN",
+      "productId": "prod-aurum-saree",
+      "variantId": "var-sar-1",
+      "warehouseId": "wh-mum",
+      "availableStock": 12,
+      "reservedStock": 2,
+      "soldStock": 84,
+      "returnedStock": 1,
+      "damagedStock": 0,
+      "reorderLevel": 5
+    },
+    {
+      "id": "inv-2",
+      "sku": "MST-LEH-2002-RED-S",
+      "productId": "prod-lehenga-gulzar",
+      "variantId": "var-leh-1",
+      "warehouseId": "wh-del",
+      "availableStock": 3,
+      "reservedStock": 1,
+      "soldStock": 22,
+      "returnedStock": 0,
+      "damagedStock": 0,
+      "reorderLevel": 2
+    },
+    {
+      "id": "inv-3",
+      "sku": "MST-ANK-3003-NVY-M",
+      "productId": "prod-anarkali-nocturne",
+      "variantId": "var-ank-2",
+      "warehouseId": "wh-mum",
+      "availableStock": 9,
+      "reservedStock": 2,
+      "soldStock": 45,
+      "returnedStock": 2,
+      "damagedStock": 0,
+      "reorderLevel": 4
+    },
+    {
+      "id": "inv-4",
+      "sku": "MST-SHR-4004-IVR-40",
+      "productId": "prod-sherwani-sheesh",
+      "variantId": "var-shr-2",
+      "warehouseId": "wh-mum",
+      "availableStock": 6,
+      "reservedStock": 1,
+      "soldStock": 31,
+      "returnedStock": 0,
+      "damagedStock": 0,
+      "reorderLevel": 3
+    },
+    {
+      "id": "inv-5",
+      "sku": "MST-JWL-5005-GLD-STD",
+      "productId": "prod-polki-choker",
+      "variantId": "var-jwl-1",
+      "warehouseId": "wh-dxb",
+      "availableStock": 15,
+      "reservedStock": 2,
+      "soldStock": 62,
+      "returnedStock": 1,
+      "damagedStock": 0,
+      "reorderLevel": 5
+    }
+  ],
+  "stockMovements": [
+    {
+      "id": "sm-1788409457811",
+      "sku": "MST-SKU-9924-RED",
+      "type": "SALE",
+      "quantity": 1,
+      "reason": "Sold in order MST-ORD-2026-000128",
+      "timestamp": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "sm-1788409457811",
+      "sku": "MST-JW-0912",
+      "type": "SALE",
+      "quantity": 1,
+      "reason": "Sold in order MST-ORD-2026-000128",
+      "timestamp": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "sm-1788409457811",
+      "sku": "MST-SKU-9924-RED",
+      "type": "SALE",
+      "quantity": 1,
+      "reason": "Sold in order MST-ORD-2026-000128",
+      "timestamp": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "sm-1",
+      "sku": "MST-SAR-1001-GLD-UN",
+      "type": "SALE",
+      "quantity": 1,
+      "reason": "Order MST-ORD-2026-000125 placed",
+      "timestamp": "2026-03-01T10:14:00Z"
+    },
+    {
+      "id": "sm-2",
+      "sku": "MST-LEH-2002-RED-S",
+      "type": "RESERVE",
+      "quantity": 1,
+      "reason": "Order MST-ORD-2026-000126 pending dispatch",
+      "timestamp": "2026-03-02T08:30:00Z"
+    },
+    {
+      "id": "sm-3",
+      "sku": "MST-SAR-1001-GLD-UN",
+      "type": "RECEIVE",
+      "quantity": 10,
+      "reason": "Inbound master loom weave batch received",
+      "timestamp": "2026-02-28T14:00:00Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "usr-admin-yashwanth",
+      "email": "yashwanthk2004k@gmail.com",
+      "passwordHash": "pbkdf2_sha256$super_admin",
+      "fullName": "Yashwanth (Super Administrator)",
+      "mobile": "+91 98200 99999",
+      "country": "IN",
+      "role": "super_admin",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-1",
+      "email": "admin@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$super_admin",
+      "fullName": "Vikramaditya Singhania",
+      "mobile": "+91 98200 11223",
+      "country": "IN",
+      "role": "super_admin",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-cat",
+      "email": "catalogue@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$cat_mgr",
+      "fullName": "Ananya Deshmukh",
+      "mobile": "+91 98200 33445",
+      "country": "IN",
+      "role": "catalogue_manager",
+      "createdAt": "2026-01-05T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-ord",
+      "email": "orders@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$ord_mgr",
+      "fullName": "Rohan Mehra",
+      "mobile": "+91 98200 55667",
+      "country": "IN",
+      "role": "order_manager",
+      "createdAt": "2026-01-05T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-fin",
+      "email": "finance@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$fin_mgr",
+      "fullName": "Pooja Agarwal",
+      "mobile": "+91 98200 77889",
+      "country": "IN",
+      "role": "finance_manager",
+      "createdAt": "2026-01-05T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-mkt",
+      "email": "marketing@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$mkt_mgr",
+      "fullName": "Sameer Sen",
+      "mobile": "+91 98200 99001",
+      "country": "IN",
+      "role": "marketing_manager",
+      "createdAt": "2026-01-05T00:00:00Z"
+    },
+    {
+      "id": "usr-admin-sup",
+      "email": "support@mstglobalfashion.com",
+      "passwordHash": "pbkdf2_sha256$sup_agent",
+      "fullName": "Kavita Rao",
+      "mobile": "+91 98200 12345",
+      "country": "IN",
+      "role": "support_agent",
+      "createdAt": "2026-01-05T00:00:00Z"
+    },
+    {
+      "id": "usr-cust-1",
+      "email": "rahul.kumar@gmail.com",
+      "passwordHash": "pbkdf2_sha256$rahul_demo",
+      "fullName": "Rahul Kumar",
+      "mobile": "+91 98450 67890",
+      "country": "IN",
+      "role": "customer",
+      "createdAt": "2026-01-12T10:00:00Z"
+    },
+    {
+      "id": "usr-cust-2",
+      "email": "sophia.chen@kensington.uk",
+      "passwordHash": "pbkdf2_sha256$sophia_demo",
+      "fullName": "Lady Sophia Chen",
+      "mobile": "+44 7700 900123",
+      "country": "GB",
+      "role": "customer",
+      "createdAt": "2026-01-15T12:00:00Z"
+    },
+    {
+      "id": "usr-cust-3",
+      "email": "aisha.maktoum@dubai.ae",
+      "passwordHash": "pbkdf2_sha256$aisha_demo",
+      "fullName": "Her Highness Aisha Al-Maktoum",
+      "mobile": "+971 50 123 4567",
+      "country": "AE",
+      "role": "customer",
+      "createdAt": "2026-01-20T14:00:00Z"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust-1",
+      "userId": "usr-cust-1",
+      "fullName": "Rahul Kumar",
+      "email": "rahul.kumar@gmail.com",
+      "mobile": "+91 98450 67890",
+      "country": "India",
+      "dateOfBirth": "1992-08-14",
+      "gender": "Male",
+      "totalOrders": 3,
+      "totalSpendINR": 84500,
+      "addresses": [
+        {
+          "id": "addr-1",
+          "label": "Home",
+          "fullName": "Rahul Kumar",
+          "mobile": "+91 98450 67890",
+          "addressLine1": "B-402, Prestige Hermitage, Kensington Road",
+          "addressLine2": "Near Ulsoor Lake",
+          "city": "Bangalore",
+          "state": "Karnataka",
+          "country": "India",
+          "postalCode": "560042",
+          "isDefaultShipping": true,
+          "isDefaultBilling": true
+        }
+      ]
+    },
+    {
+      "id": "cust-2",
+      "userId": "usr-cust-2",
+      "fullName": "Lady Sophia Chen",
+      "email": "sophia.chen@kensington.uk",
+      "mobile": "+44 7700 900123",
+      "country": "United Kingdom",
+      "totalOrders": 2,
+      "totalSpendINR": 235000,
+      "addresses": [
+        {
+          "id": "addr-2",
+          "label": "Home",
+          "fullName": "Lady Sophia Chen",
+          "mobile": "+44 7700 900123",
+          "addressLine1": "14 Palace Gate, Flat 3B",
+          "addressLine2": "Kensington",
+          "city": "London",
+          "state": "Greater London",
+          "country": "United Kingdom",
+          "postalCode": "W8 5LS",
+          "isDefaultShipping": true,
+          "isDefaultBilling": true
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "MST-ORD-2026-000128",
+      "invoiceId": "MST-INV-2026-000128",
+      "paymentId": "MST-PAY-2026-000128",
+      "shipmentId": "MST-SHP-2026-000128",
+      "customerId": "cust-guest",
+      "customerName": "Priya Sharma",
+      "customerEmail": "priya.sharma@example.com",
+      "customerMobile": "+1 (212) 555-0198",
+      "items": [
+        {
+          "productId": "mst-saree-aurum-9924",
+          "sku": "MST-SKU-9924-RED",
+          "name": "Aurum Handloom Zari Saree & Tailored Blouse Set",
+          "size": "Unstitched",
+          "color": "Imperial Crimson & Antique Gold",
+          "quantity": 1,
+          "unitPriceINR": 28500,
+          "totalPriceINR": 28500,
+          "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDOlJ9FgV5VUrfATK6CQ2QHUj1hKZHsEETvfrQRtATzi8iYhXW4j8B9a1qh0c0_d6e8cTCbYtjJ01O6w7Wu-Wpdh95UvcjwMeqOC2keQGPzg3J1KmgGRKdBdaqtz2-r2usPgBEf9wIaqYOTIDjPrx40bb6-CQ1AiNDhShrbFqxb2KWqBVKCNcT78v6WykKQCrdvB70ia7j8ZVH7sxQ6b48ZV5GpC2P8Kn5xnldjqmIoPkHChW_TsJ6a"
+        },
+        {
+          "productId": "cross-kundan-choker",
+          "sku": "MST-JW-0912",
+          "name": "Artisanal Kundan Choker",
+          "size": "Adjustable Dori",
+          "color": "22K Antique Gold & Emerald",
+          "quantity": 1,
+          "unitPriceINR": 9180,
+          "totalPriceINR": 9180,
+          "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDKtK8zSGo5CUOG04IaWN8uuCh59h3IFrvccA5kC_ESm2OXpiADLpfg0cepdR3NY00NDMs2ypjx1DoeL494uHojYQ_tH5QgJ9NlD64f05AByfBTHAFxIkd_TErz-dxYrse01b9cEXc4dze5BrvmTX5VHsHEPaWy3jsN8LjTXnA-z_ILCpKgwH1RoOo6mBkm0TvulZDunxJk1zLFXIJMOOoGqCGZJ_4W238XLsuoY-2TojqRPEZu81EQ"
+        },
+        {
+          "productId": "cross-kundan-choker",
+          "sku": "MST-SKU-9924-RED",
+          "name": "Nizam Polki Kundan Choker",
+          "size": "Unstitched",
+          "color": "Imperial Crimson & Antique Gold",
+          "quantity": 1,
+          "unitPriceINR": 14200,
+          "totalPriceINR": 14200,
+          "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDzNpC2aeQRqQ4GrBQkEVkm8AFKSQ3l1IdltDUO3o4r5sC6zSWfIjnvDDFdWqLm0heUJ8evxG8O01LSJlCSF3WOwSAFAYaBwqYfngQE6wc-tibhpjDn6cyWCQUmcq9c5NN7gQ5-Z1bskC6oUno9gbYqxDqpOVjePfrRtPPaoxMNzyckJaDgx8ELnugi0x5ZvivRvzX82riECxltzcXi8vil4KKa0fSHXK8XnJ0eswpYWSUHIaNjzpca"
+        }
+      ],
+      "currency": "USD",
+      "exchangeRateUsed": 83.45,
+      "subtotalINR": 51880,
+      "subtotalForeign": 621.69,
+      "discountINR": 7782,
+      "discountForeign": 93.25,
+      "couponCode": "MSTGLOBAL15",
+      "couponDiscountINR": 7782,
+      "couponDiscountForeign": 93.25,
+      "shippingFeeINR": 0,
+      "shippingFeeForeign": 0,
+      "taxAmountINR": 3213,
+      "taxAmountForeign": 38.5,
+      "grandTotalINR": 47311,
+      "grandTotalForeign": 566.94,
+      "shippingAddress": {
+        "fullName": "Priya Sharma",
+        "line1": "742 Park Avenue, Apt 11B",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021",
+        "country": "United States"
+      },
+      "billingAddress": {
+        "fullName": "Priya Sharma",
+        "line1": "742 Park Avenue, Apt 11B",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021",
+        "country": "United States"
+      },
+      "deliveryMethod": "DHL Express Worldwide (DDP Doorstep)",
+      "status": "ORDER PLACED",
+      "paymentStatus": "SUCCESS",
+      "paymentMethod": "Stripe Global / AMEX",
+      "courierName": "DHL Express Worldwide",
+      "trackingNumber": "DHL-GLOBAL-6494246850",
+      "estimatedDeliveryDate": "2026-09-07",
+      "orderDate": "2026-09-03T04:24:17.810Z",
+      "updatedAt": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "MST-ORD-2026-000125",
+      "invoiceId": "MST-INV-2026-000125",
+      "paymentId": "MST-PAY-2026-000125",
+      "shipmentId": "MST-SHP-2026-000125",
+      "customerId": "cust-1",
+      "customerName": "Rahul Kumar",
+      "customerEmail": "rahul.kumar@gmail.com",
+      "customerMobile": "+91 98450 67890",
+      "items": [
+        {
+          "productId": "prod-aurum-saree",
+          "variantId": "var-sar-1",
+          "sku": "MST-SAR-1001-GLD-UN",
+          "name": "The Aurum Heritage Silk Saree",
+          "size": "Unstitched Standard",
+          "color": "Antique Imperial Gold",
+          "quantity": 1,
+          "unitPriceINR": 28500,
+          "totalPriceINR": 28500,
+          "unitPriceForeign": 28500,
+          "totalPriceForeign": 28500,
+          "image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400&auto=format&fit=crop&q=80"
+        }
+      ],
+      "currency": "INR",
+      "exchangeRateUsed": 1,
+      "subtotalINR": 28500,
+      "subtotalForeign": 28500,
+      "discountINR": 0,
+      "discountForeign": 0,
+      "couponCode": "WELCOME10",
+      "couponDiscountINR": 2850,
+      "couponDiscountForeign": 2850,
+      "shippingFeeINR": 0,
+      "shippingFeeForeign": 0,
+      "taxAmountINR": 3078,
+      "taxAmountForeign": 3078,
+      "grandTotalINR": 28728,
+      "grandTotalForeign": 28728,
+      "shippingAddress": {
+        "fullName": "Rahul Kumar",
+        "mobile": "+91 98450 67890",
+        "addressLine1": "B-402, Prestige Hermitage, Kensington Road",
+        "addressLine2": "Near Ulsoor Lake",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "postalCode": "560042"
+      },
+      "billingAddress": {
+        "fullName": "Rahul Kumar",
+        "mobile": "+91 98450 67890",
+        "addressLine1": "B-402, Prestige Hermitage, Kensington Road",
+        "addressLine2": "Near Ulsoor Lake",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "postalCode": "560042"
+      },
+      "deliveryMethod": "Standard Courier (Blue Dart)",
+      "status": "PROCESSING",
+      "paymentStatus": "SUCCESS",
+      "paymentMethod": "UPI (Google Pay)",
+      "courierName": "Blue Dart Express",
+      "trackingNumber": "BD-IND-99120482",
+      "estimatedDeliveryDate": "2026-03-05",
+      "orderDate": "2026-03-01T10:14:00Z",
+      "updatedAt": "2026-03-01T11:00:00Z"
+    },
+    {
+      "id": "MST-ORD-2026-000126",
+      "invoiceId": "MST-INV-2026-000126",
+      "paymentId": "MST-PAY-2026-000126",
+      "shipmentId": "MST-SHP-2026-000126",
+      "customerId": "cust-2",
+      "customerName": "Lady Sophia Chen",
+      "customerEmail": "sophia.chen@kensington.uk",
+      "customerMobile": "+44 7700 900123",
+      "items": [
+        {
+          "productId": "prod-lehenga-gulzar",
+          "variantId": "var-leh-1",
+          "sku": "MST-LEH-2002-RED-S",
+          "name": "Gulzar Crimson Zardozi Lehenga",
+          "size": "S (Waist 28\")",
+          "color": "Imperial Vermillion",
+          "quantity": 1,
+          "unitPriceINR": 145000,
+          "totalPriceINR": 145000,
+          "unitPriceForeign": 1319.5,
+          "totalPriceForeign": 1319.5,
+          "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format&fit=crop&q=80"
+        }
+      ],
+      "currency": "GBP",
+      "exchangeRateUsed": 0.0091,
+      "subtotalINR": 145000,
+      "subtotalForeign": 1319.5,
+      "discountINR": 0,
+      "discountForeign": 0,
+      "couponCode": "MSTGLOBAL15",
+      "couponDiscountINR": 21750,
+      "couponDiscountForeign": 197.92,
+      "shippingFeeINR": 0,
+      "shippingFeeForeign": 0,
+      "taxAmountINR": 24650,
+      "taxAmountForeign": 224.31,
+      "grandTotalINR": 147900,
+      "grandTotalForeign": 1345.89,
+      "shippingAddress": {
+        "fullName": "Lady Sophia Chen",
+        "mobile": "+44 7700 900123",
+        "addressLine1": "14 Palace Gate, Flat 3B",
+        "addressLine2": "Kensington",
+        "city": "London",
+        "state": "Greater London",
+        "country": "United Kingdom",
+        "postalCode": "W8 5LS"
+      },
+      "billingAddress": {
+        "fullName": "Lady Sophia Chen",
+        "mobile": "+44 7700 900123",
+        "addressLine1": "14 Palace Gate, Flat 3B",
+        "addressLine2": "Kensington",
+        "city": "London",
+        "state": "Greater London",
+        "country": "United Kingdom",
+        "postalCode": "W8 5LS"
+      },
+      "deliveryMethod": "DHL Express Worldwide (DDP Doorstep)",
+      "status": "PACKED",
+      "paymentStatus": "SUCCESS",
+      "paymentMethod": "Credit Card (Apple Pay - Stripe)",
+      "courierName": "DHL Express UK",
+      "trackingNumber": "DHL-UK-4891002381",
+      "estimatedDeliveryDate": "2026-03-06",
+      "orderDate": "2026-02-28T16:30:00Z",
+      "updatedAt": "2026-03-02T08:30:00Z"
+    },
+    {
+      "id": "MST-ORD-2026-000127",
+      "invoiceId": "MST-INV-2026-000127",
+      "paymentId": "MST-PAY-2026-000127",
+      "shipmentId": "MST-SHP-2026-000127",
+      "customerId": "cust-3",
+      "customerName": "Her Highness Aisha Al-Maktoum",
+      "customerEmail": "aisha.maktoum@dubai.ae",
+      "customerMobile": "+971 50 123 4567",
+      "items": [
+        {
+          "productId": "prod-polki-choker",
+          "variantId": "var-jwl-1",
+          "sku": "MST-JWL-5005-GLD-STD",
+          "name": "Nizam Polki Kundan Choker & Earrings Set",
+          "size": "Standard",
+          "color": "24K Micron Gold Plated",
+          "quantity": 2,
+          "unitPriceINR": 14200,
+          "totalPriceINR": 28400,
+          "unitPriceForeign": 604.92,
+          "totalPriceForeign": 1209.84,
+          "image": "https://images.unsplash.com/photo-1544441893-675973e31985?w=400&auto=format&fit=crop&q=80"
+        }
+      ],
+      "currency": "AED",
+      "exchangeRateUsed": 0.0426,
+      "subtotalINR": 28400,
+      "subtotalForeign": 1209.84,
+      "discountINR": 0,
+      "discountForeign": 0,
+      "couponDiscountINR": 0,
+      "couponDiscountForeign": 0,
+      "shippingFeeINR": 0,
+      "shippingFeeForeign": 0,
+      "taxAmountINR": 1420,
+      "taxAmountForeign": 60.49,
+      "grandTotalINR": 29820,
+      "grandTotalForeign": 1270.33,
+      "shippingAddress": {
+        "fullName": "Her Highness Aisha Al-Maktoum",
+        "mobile": "+971 50 123 4567",
+        "addressLine1": "Villa 77, Palm Jumeirah West Crescent",
+        "addressLine2": "Frond N",
+        "city": "Dubai",
+        "state": "Dubai",
+        "country": "United Arab Emirates",
+        "postalCode": "00000"
+      },
+      "billingAddress": {
+        "fullName": "Her Highness Aisha Al-Maktoum",
+        "mobile": "+971 50 123 4567",
+        "addressLine1": "Villa 77, Palm Jumeirah West Crescent",
+        "addressLine2": "Frond N",
+        "city": "Dubai",
+        "state": "Dubai",
+        "country": "United Arab Emirates",
+        "postalCode": "00000"
+      },
+      "deliveryMethod": "DHL Express Worldwide (DDP Doorstep)",
+      "status": "SHIPPED",
+      "paymentStatus": "SUCCESS",
+      "paymentMethod": "Credit Card (Visa Platinum)",
+      "courierName": "DHL Express UAE",
+      "trackingNumber": "DHL-DXB-918230192",
+      "estimatedDeliveryDate": "2026-03-04",
+      "orderDate": "2026-02-27T09:15:00Z",
+      "updatedAt": "2026-03-01T14:20:00Z"
+    }
+  ],
+  "orderStatusHistory": [
+    {
+      "id": "osh-1",
+      "orderId": "MST-ORD-2026-000125",
+      "status": "ORDER PLACED",
+      "note": "Order placed by customer via UPI",
+      "timestamp": "2026-03-01T10:14:00Z",
+      "updatedBy": "System"
+    },
+    {
+      "id": "osh-2",
+      "orderId": "MST-ORD-2026-000125",
+      "status": "PAYMENT CONFIRMED",
+      "note": "Payment of ₹28,728 verified via Razorpay webhook",
+      "timestamp": "2026-03-01T10:15:00Z",
+      "updatedBy": "Payment Gateway"
+    },
+    {
+      "id": "osh-3",
+      "orderId": "MST-ORD-2026-000125",
+      "status": "PROCESSING",
+      "note": "Master loom weaver allocated for saree hand finishing",
+      "timestamp": "2026-03-01T11:00:00Z",
+      "updatedBy": "Rohan Mehra (Order Manager)"
+    },
+    {
+      "id": "osh-4",
+      "orderId": "MST-ORD-2026-000126",
+      "status": "PACKED",
+      "note": "Silk Mark certified, anti-tarnish preserved & sealed in velvet case",
+      "timestamp": "2026-03-02T08:30:00Z",
+      "updatedBy": "Quality Control Team"
+    },
+    {
+      "id": "osh-1788409457810",
+      "orderId": "MST-ORD-2026-000128",
+      "status": "ORDER PLACED",
+      "note": "Order placed by Priya Sharma via Stripe Global / AMEX",
+      "timestamp": "2026-09-03T04:24:17.810Z",
+      "updatedBy": "System"
+    },
+    {
+      "id": "osh-1788409457811",
+      "orderId": "MST-ORD-2026-000128",
+      "status": "PAYMENT CONFIRMED",
+      "note": "Payment of USD 566.94 successfully confirmed via Stripe",
+      "timestamp": "2026-09-03T04:24:17.810Z",
+      "updatedBy": "Gateway Webhook"
+    }
+  ],
+  "payments": [
+    {
+      "id": "MST-PAY-2026-000128",
+      "orderId": "MST-ORD-2026-000128",
+      "gateway": "Stripe",
+      "method": "Stripe Global / AMEX",
+      "amountINR": 47311,
+      "amountForeign": 566.94,
+      "currency": "USD",
+      "status": "SUCCESS",
+      "transactionRef": "txn_ewqxs5v74m",
+      "createdAt": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "MST-PAY-2026-000125",
+      "orderId": "MST-ORD-2026-000125",
+      "gateway": "Razorpay",
+      "method": "UPI",
+      "amountINR": 28728,
+      "amountForeign": 28728,
+      "currency": "INR",
+      "status": "SUCCESS",
+      "transactionRef": "pay_RZP_991823716",
+      "createdAt": "2026-03-01T10:15:00Z"
+    },
+    {
+      "id": "MST-PAY-2026-000126",
+      "orderId": "MST-ORD-2026-000126",
+      "gateway": "Stripe",
+      "method": "Apple Pay",
+      "amountINR": 147900,
+      "amountForeign": 1345.89,
+      "currency": "GBP",
+      "status": "SUCCESS",
+      "transactionRef": "ch_STRIPE_19920194a",
+      "createdAt": "2026-02-28T16:31:00Z"
+    },
+    {
+      "id": "MST-PAY-2026-000127",
+      "orderId": "MST-ORD-2026-000127",
+      "gateway": "Stripe",
+      "method": "Credit Card",
+      "amountINR": 29820,
+      "amountForeign": 1270.33,
+      "currency": "AED",
+      "status": "SUCCESS",
+      "transactionRef": "ch_STRIPE_8829104b",
+      "createdAt": "2026-02-27T09:16:00Z"
+    }
+  ],
+  "returns": [
+    {
+      "id": "MST-RET-2026-000001",
+      "orderId": "MST-ORD-2026-000124",
+      "productId": "prod-anarkali-nocturne",
+      "sku": "MST-ANK-3003-NVY-S",
+      "productName": "Nocturne Midnight Velvet Anarkali",
+      "quantity": 1,
+      "reason": "Wrong size",
+      "description": "Customer requested exchange for size M due to waist fit preference.",
+      "status": "Quality Check",
+      "refundAmountINR": 42000,
+      "refundAmountForeign": 487.2,
+      "currency": "USD",
+      "createdAt": "2026-02-26T11:00:00Z",
+      "updatedAt": "2026-03-01T16:00:00Z"
+    }
+  ],
+  "refunds": [],
+  "coupons": [
+    {
+      "id": "cp-welcome10",
+      "code": "WELCOME10",
+      "discountType": "Percentage",
+      "discountValue": 10,
+      "minOrderValueINR": 5000,
+      "maxDiscountINR": 5000,
+      "startDate": "2026-01-01",
+      "expiryDate": "2026-12-31",
+      "usageLimit": 1000,
+      "usedCount": 142,
+      "isActive": true
+    },
+    {
+      "id": "cp-global15",
+      "code": "MSTGLOBAL15",
+      "discountType": "Percentage",
+      "discountValue": 15,
+      "minOrderValueINR": 20000,
+      "maxDiscountINR": 25000,
+      "startDate": "2026-01-01",
+      "expiryDate": "2026-12-31",
+      "usageLimit": 500,
+      "usedCount": 88,
+      "isActive": true
+    },
+    {
+      "id": "cp-festive20",
+      "code": "FESTIVE20",
+      "discountType": "Percentage",
+      "discountValue": 20,
+      "minOrderValueINR": 50000,
+      "maxDiscountINR": 40000,
+      "startDate": "2026-02-01",
+      "expiryDate": "2026-11-30",
+      "usageLimit": 200,
+      "usedCount": 39,
+      "isActive": true
+    },
+    {
+      "id": "cp-flat2000",
+      "code": "FLAT2000",
+      "discountType": "Fixed",
+      "discountValue": 2000,
+      "minOrderValueINR": 15000,
+      "maxDiscountINR": 2000,
+      "startDate": "2026-01-01",
+      "expiryDate": "2026-12-31",
+      "usageLimit": 300,
+      "usedCount": 47,
+      "isActive": true
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "productId": "prod-aurum-saree",
+      "customerId": "cust-1",
+      "customerName": "Rahul Kumar",
+      "rating": 5,
+      "title": "Breathtaking Pure Zari Craftsmanship",
+      "comment": "Gifted this to my wife for our royal anniversary. The silk drape, real bullion sheen, and Silk Mark certificate made it utterly majestic. Delivered seamlessly with luxury packaging.",
+      "isVerifiedPurchase": true,
+      "status": "Approved",
+      "createdAt": "2026-02-15T14:30:00Z"
+    },
+    {
+      "id": "rev-2",
+      "productId": "prod-lehenga-gulzar",
+      "customerId": "cust-2",
+      "customerName": "Lady Sophia Chen",
+      "rating": 5,
+      "title": "Unrivaled Wedding Couture in London",
+      "comment": "Arrived in Mayfair in under 4 days via DHL Express with zero duties to pay. The zardozi weight and cutdana embroidery exceeded every expectation.",
+      "isVerifiedPurchase": true,
+      "status": "Approved",
+      "createdAt": "2026-02-20T18:00:00Z"
+    }
+  ],
+  "supportTickets": [
+    {
+      "id": "tkt-01",
+      "ticketNumber": "MST-TKT-9901",
+      "customerId": "cust-1",
+      "customerName": "Rahul Kumar",
+      "customerEmail": "rahul.kumar@gmail.com",
+      "orderNumber": "MST-ORD-2026-000125",
+      "issueCategory": "Sizing & Custom Tailoring",
+      "status": "OPEN",
+      "messages": [
+        {
+          "id": "msg-1",
+          "sender": "Customer",
+          "senderName": "Rahul Kumar",
+          "message": "Can I add a custom high-neck brocade blouse with padded cups to order MST-ORD-2026-000125?",
+          "timestamp": "2026-03-01T12:00:00Z"
+        },
+        {
+          "id": "msg-2",
+          "sender": "Support Agent",
+          "senderName": "Kavita Rao",
+          "message": "Greetings Mr. Kumar. Our Master Cutter Pandit Gopal Sharma has accepted your request. We will update the atelier work ticket accordingly.",
+          "timestamp": "2026-03-01T12:30:00Z"
+        }
+      ],
+      "createdAt": "2026-03-01T12:00:00Z",
+      "updatedAt": "2026-03-01T12:30:00Z"
+    }
+  ],
+  "cmsBlogs": [
+    {
+      "id": "blog-1",
+      "title": "10 Best Silk Sarees for the Royal Wedding Season",
+      "slug": "10-best-silk-sarees-for-wedding-season",
+      "category": "Fashion Guides",
+      "coverImage": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1000&auto=format&fit=crop&q=80",
+      "excerpt": "Discover the heritage motifs of Banarasi Katan, Kanjeevaram Pattu, and real silver electroplated zari that define timeless grandeur.",
+      "content": "Woven over generations by master looms, pure silk sarees continue to reign as the quintessential statement of Indian heritage fashion. In this definitive guide, our atelier curates the top 10 handloom weaves every collector should own for the wedding and festive season.",
+      "publishedDate": "2026-02-20",
+      "readTime": "6 min read"
+    },
+    {
+      "id": "blog-2",
+      "title": "The Art of Zardozi: From Mughal Courts to Global Runways",
+      "slug": "the-art-of-zardozi-mughal-courts-to-global-runways",
+      "category": "Heritage Weaves",
+      "coverImage": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=1000&auto=format&fit=crop&q=80",
+      "excerpt": "How real gold bullion wire, seed pearls, and intricate needlecraft are preserved by modern master craftsmen.",
+      "content": "Zardozi—literally translating to sewing with gold—dates back centuries to the grand courts of the Mughal empire. Today, MST Global Fashion bridges this centuries-old guild heritage with modern couture sensibilities.",
+      "publishedDate": "2026-02-14",
+      "readTime": "8 min read"
+    }
+  ],
+  "marketingBanners": [
+    {
+      "id": "ban-1",
+      "title": "The Royal Heritage 2026",
+      "subtitle": "Certified Silk Mark Banarasi Weaves & Imperial Bridal Ensembles",
+      "callToAction": "EXPLORE RUNWAY COLLECTION",
+      "linkUrl": "#discover",
+      "imageUrl": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1600&auto=format&fit=crop&q=80",
+      "active": true
+    },
+    {
+      "id": "ban-2",
+      "title": "Global Privilege • 15% Off Your First Couture Acquisition",
+      "subtitle": "Use Code MSTGLOBAL15 at Checkout with Pre-cleared DDP Shipping",
+      "callToAction": "SHOP RUNWAY EXCLUSIVES",
+      "linkUrl": "#categories",
+      "imageUrl": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=1600&auto=format&fit=crop&q=80",
+      "active": true
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "al-1788409457811",
+      "adminEmail": "checkout@mstglobalfashion.com",
+      "action": "Order Placed & Payment Captured",
+      "entity": "MST-ORD-2026-000128",
+      "newValue": "USD 566.94 (₹47311)",
+      "timestamp": "2026-09-03T04:24:17.810Z"
+    },
+    {
+      "id": "al-1",
+      "adminEmail": "admin@mstglobalfashion.com",
+      "action": "Changed product price",
+      "entity": "The Aurum Heritage Silk Saree",
+      "oldValue": "₹25,000",
+      "newValue": "₹28,500",
+      "timestamp": "2026-02-28T10:14:00Z"
+    },
+    {
+      "id": "al-2",
+      "adminEmail": "admin@mstglobalfashion.com",
+      "action": "Created coupon code",
+      "entity": "MSTGLOBAL15",
+      "oldValue": "None",
+      "newValue": "15% Discount (Min ₹20k)",
+      "timestamp": "2026-02-20T12:00:00Z"
+    },
+    {
+      "id": "al-3",
+      "adminEmail": "orders@mstglobalfashion.com",
+      "action": "Updated order status to PACKED",
+      "entity": "MST-ORD-2026-000126",
+      "oldValue": "PROCESSING",
+      "newValue": "PACKED",
+      "timestamp": "2026-03-02T08:30:00Z"
+    },
+    {
+      "id": "al-4",
+      "adminEmail": "finance@mstglobalfashion.com",
+      "action": "Verified payment webhook",
+      "entity": "MST-PAY-2026-000125",
+      "oldValue": "INITIATED",
+      "newValue": "SUCCESS",
+      "timestamp": "2026-03-01T10:15:00Z"
+    }
+  ]
+}

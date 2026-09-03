@@ -5,41 +5,71 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     code: 'INR',
     symbol: '₹',
     name: 'Indian Rupee',
-    rateToINR: 1,
-    inrToCurrencyRate: 1,
+    rateAgainstINR: 1,
     flag: '🇮🇳'
   },
   USD: {
     code: 'USD',
     symbol: '$',
     name: 'US Dollar',
-    rateToINR: 83.45,
-    inrToCurrencyRate: 1 / 83.45,
+    rateAgainstINR: 1 / 83.45,
     flag: '🇺🇸'
   },
   EUR: {
     code: 'EUR',
     symbol: '€',
     name: 'Euro',
-    rateToINR: 90.45,
-    inrToCurrencyRate: 1 / 90.45,
+    rateAgainstINR: 1 / 90.45,
     flag: '🇪🇺'
   },
   GBP: {
     code: 'GBP',
     symbol: '£',
     name: 'British Pound',
-    rateToINR: 105.80,
-    inrToCurrencyRate: 1 / 105.80,
+    rateAgainstINR: 1 / 105.80,
     flag: '🇬🇧'
   },
   AED: {
     code: 'AED',
     symbol: 'AED ',
     name: 'UAE Dirham',
-    rateToINR: 22.72,
-    inrToCurrencyRate: 1 / 22.72,
+    rateAgainstINR: 1 / 22.72,
     flag: '🇦🇪'
+  },
+  SGD: {
+    code: 'SGD',
+    symbol: 'SGD $',
+    name: 'Singapore Dollar',
+    rateAgainstINR: 0.0156,
+    flag: '🇸🇬'
+  },
+  MYR: {
+    code: 'MYR',
+    symbol: 'MYR RM',
+    name: 'Malaysian Ringgit',
+    rateAgainstINR: 0.0514,
+    flag: '🇲🇾'
+  },
+  SAR: {
+    code: 'SAR',
+    symbol: 'SAR ﷼',
+    name: 'Saudi Riyal',
+    rateAgainstINR: 0.0435,
+    flag: '🇸🇦'
+  },
+  AUD: {
+    code: 'AUD',
+    symbol: 'AUD $',
+    name: 'Australian Dollar',
+    rateAgainstINR: 0.0178,
+    flag: '🇦🇺'
+  },
+  CAD: {
+    code: 'CAD',
+    symbol: 'CAD $',
+    name: 'Canadian Dollar',
+    rateAgainstINR: 0.0158,
+    flag: '🇨🇦'
   }
 };
 
@@ -340,7 +370,7 @@ export const INITIAL_ORDERS: OrderItem[] = [
     customerCity: 'San Francisco, US',
     itemCount: 2,
     summaryText: '2 Items (Aurum Saree + Kundan Choker)',
-    status: 'Packed & Labeled',
+    status: 'PACKED',
     settledTotalFormatted: '$520.00 USD',
     paymentMethod: 'Stripe Global',
     trackingNumber: '#9823410293',
@@ -357,7 +387,7 @@ export const INITIAL_ORDERS: OrderItem[] = [
     customerCity: 'Dubai, UAE',
     itemCount: 1,
     summaryText: '1 Haute Item (Custom Bridal Ensemble)',
-    status: 'Tailoring Prep',
+    status: 'PROCESSING',
     settledTotalFormatted: '2,450 AED',
     paymentMethod: 'Network International',
     trackingNumber: 'Pending Allocation',
@@ -375,7 +405,7 @@ export const INITIAL_ORDERS: OrderItem[] = [
     customerCity: 'Kensington, London',
     itemCount: 3,
     summaryText: '3 Items (Nocturne Gown + Minaudière)',
-    status: 'DHL Ready',
+    status: 'SHIPPED',
     settledTotalFormatted: '£480.00 GBP',
     paymentMethod: 'Barclays / Apple Pay',
     trackingNumber: '#9823410288',
