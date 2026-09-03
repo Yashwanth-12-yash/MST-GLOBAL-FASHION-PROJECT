@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  body {
+    background-color: #f9f9f7;
+    color: #1a1c1b;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Typography archetype helpers matching the Haute Modern Editorial spec */
+.font-display-xl {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 64px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+.font-display-xl-mobile {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 40px;
+  line-height: 46px;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+.font-display-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 48px;
+  line-height: 54px;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+.font-display-lg-mobile {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+
+.font-headline-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.font-headline-lg-mobile {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  font-weight: 500;
+}
+
+.font-headline-md {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  font-weight: 500;
+}
+
+.font-headline-sm {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+.font-body-lg {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+
+.font-body-md {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  font-weight: 400;
+}
+
+.font-body-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+}
+
+.font-label-md {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+
+.font-label-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
+
+.font-label-caps-md {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.font-label-caps-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 9px;
+  line-height: 12px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+}
+
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top, 0px), 0px);
+}
