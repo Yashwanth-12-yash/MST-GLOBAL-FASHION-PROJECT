@@ -5,8 +5,8 @@ import { ScreenType } from '../types';
 export const BottomNav: React.FC = () => {
   const { currentScreen, setCurrentScreen, cartCount, wishlistCount } = useApp();
 
-  // If in full checkout screen, hide bottom nav so user focuses on completing order
-  if (currentScreen === 'checkout') {
+  // If in full checkout screen or product detail view, hide bottom nav so user has an unobstructed purchase bar
+  if (currentScreen === 'checkout' || currentScreen === 'product_detail') {
     return null;
   }
 

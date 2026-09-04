@@ -83,6 +83,8 @@ export interface Product {
   videoUrl?: string;
   category: string;
   categoryId?: string;
+  collection?: string;
+  collectionId?: string;
   subcategory?: string;
   brand?: string;
   tags?: string[];
@@ -109,6 +111,27 @@ export interface Product {
     priceINR: number;
     image: string;
   }[];
+}
+
+export interface CategoryItem {
+  id: string;
+  name: string;
+  stylesCount: string;
+  image: string;
+  description?: string;
+  matchingCollectionName?: string;
+}
+
+export interface CollectionItem {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  categoryName: string;
+  categoryId: string;
+  image: string;
+  stylesCount: string;
+  themeColor?: string;
 }
 
 export interface CartItem {
@@ -311,6 +334,24 @@ export interface UserAccount {
   createdAt?: string;
 }
 
+export interface LocationServiceability {
+  isServiceable: boolean;
+  courierName: string;
+  serviceType: string;
+  estimatedDeliveryDays: number;
+  deliveryEtaDate: string;
+  hubCode: string;
+  zone: string;
+  detectedCity?: string;
+  detectedState?: string;
+  codAvailable: boolean;
+  originHub?: string;
+  transitRoute?: string[];
+  verificationVerdict: 'VERIFIED' | 'WARNING' | 'UNSERVICEABLE';
+  verificationDetails?: string;
+  error?: string;
+}
+
 export interface Address {
   id: string;
   label: string; // e.g., 'Home', 'Office', 'Overseas Residence'
@@ -325,5 +366,7 @@ export interface Address {
   country: string;
   isDefault: boolean;
   deliveryInstructions?: string;
+  serviceability?: LocationServiceability;
 }
+
 

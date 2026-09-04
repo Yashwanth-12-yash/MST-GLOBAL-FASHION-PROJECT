@@ -3,8 +3,10 @@ import { useApp } from '../context/AppContext';
 import {
   HERO_IMAGE_URL,
   CATEGORIES,
+  COLLECTIONS,
   AURUM_SAREE_PRODUCT,
   NOCTURNE_ANARKALI_PRODUCT,
+  ALL_PRODUCTS,
   ATELIER_STORY_BG
 } from '../data/mockData';
 import { Product } from '../types';
@@ -20,11 +22,25 @@ export const DiscoverScreen: React.FC = () => {
     addToCart,
     applyPromoCode,
     setIsConciergeOpen,
-    showToast
+    showToast,
+    setSelectedCategoryFilter
   } = useApp();
 
   const [rateMode, setRateMode] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [recentlyAddedId, setRecentlyAddedId] = useState<string | null>(null);
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
+
+  const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    const chosenSizeLabel = selectedSizes[product.id];
+    const chosenSize = product.sizes.find((s) => s.label === chosenSizeLabel) || product.sizes[0];
+    addToCart(product, product.colors[0], chosenSize, 1);
+    setRecentlyAddedId(product.id);
+    setTimeout(() => {
+      setRecentlyAddedId(null);
+    }, 2000);
+  };
 
   const rateQuotes = [
     '1 USD ≈ ₹83.45',
@@ -195,7 +211,11 @@ export const DiscoverScreen: React.FC = () => {
           {CATEGORIES.map((cat) => (
             <div
               key={cat.id}
-              onClick={() => setCurrentScreen('categories')}
+              onClick={() => {
+                if (setSelectedCategoryFilter) setSelectedCategoryFilter(cat.name);
+                setCurrentScreen('categories');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="group flex flex-col items-center flex-shrink-0 w-28 gap-2 cursor-pointer"
             >
               <div className="w-28 h-36 rounded-t-full rounded-b-lg overflow-hidden bg-[#eeeeec] relative shadow-xs">
@@ -215,6 +235,67 @@ export const DiscoverScreen: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Archival Matching Collections Preview Row */}
+        <div className="mt-6 pt-5 border-t border-black/[0.06]">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-[#735c00]">
+                collections_bookmark
+              </span>
+              <span className="font-label-caps-sm text-label-caps-sm uppercase tracking-widest text-[#735c00] font-bold">
+                Matching Haute Collections
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                if (setSelectedCategoryFilter) setSelectedCategoryFilter(null);
+                setCurrentScreen('categories');
+              }}
+              className="text-xs text-[#444748] hover:text-black font-semibold uppercase tracking-wider"
+            >
+              View All 10 Archives ➔
+            </button>
+          </div>
+
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
+            {COLLECTIONS.map((col) => (
+              <div
+                key={col.id}
+                onClick={() => {
+                  if (setSelectedCategoryFilter) setSelectedCategoryFilter(col.categoryName);
+                  setCurrentScreen('categories');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex-shrink-0 w-64 bg-white rounded-xl overflow-hidden border border-black/[0.06] shadow-xs hover:shadow-md cursor-pointer group transition-all"
+              >
+                <div className="relative aspect-[16/9] w-full bg-[#eeeeec] overflow-hidden">
+                  <img
+                    src={col.image}
+                    alt={col.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-2 left-2 right-2 text-white">
+                    <span className="text-[9px] uppercase tracking-wider text-[#fed65b] font-bold">
+                      {col.categoryName}
+                    </span>
+                    <h4 className="font-bold text-xs leading-tight line-clamp-1 text-white">
+                      {col.name}
+                    </h4>
+                  </div>
+                </div>
+                <div className="p-2.5 bg-[#fdfdfc]">
+                  <p className="text-[10px] text-[#735c00] italic font-medium line-clamp-1">"{col.tagline}"</p>
+                  <div className="flex items-center justify-between mt-2 pt-1 border-t border-black/[0.04] text-[10px] text-[#444748]">
+                    <span>{col.stylesCount}</span>
+                    <span className="font-bold uppercase tracking-wider text-black group-hover:underline">Explore ➔</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -237,201 +318,191 @@ export const DiscoverScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* 2 Column Editorial Product Card Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-6">
-          {/* Product Card 1: Aurum Handloom Saree */}
-          <div className="flex flex-col bg-white rounded-sm overflow-hidden shadow-xs group border border-black/[0.04]">
-            <div
-              className="relative aspect-[3/4] w-full bg-[#eeeeec] overflow-hidden cursor-pointer"
-              onClick={() => handleOpenProduct(AURUM_SAREE_PRODUCT)}
-            >
+        {/* Editorial Product Card Grid with Prominent Add to Cart Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+          {ALL_PRODUCTS.map((product) => {
+            const isWish = isWishlisted(product.id);
+            const isAdded = recentlyAddedId === product.id;
+            const currentSizeLabel = selectedSizes[product.id] || product.sizes[0]?.label;
+
+            return (
               <div
-                className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url('${AURUM_SAREE_PRODUCT.primaryImage}')` }}
-              />
-              {/* Top Floating Tag */}
-              <div className="absolute top-2 left-2 flex flex-col gap-1">
-                <span className="px-2 py-0.5 rounded-full bg-[#40000a] text-[#dd565f] font-label-caps-sm text-label-caps-sm font-bold uppercase tracking-wider">
-                  Only 3 Left
-                </span>
-                <span className="px-1.5 py-0.5 rounded-full bg-black text-white font-label-caps-sm text-label-caps-sm uppercase tracking-wider">
-                  -18%
-                </span>
-              </div>
-              {/* Wishlist Heart Button */}
-              <button
-                aria-label="Add to wishlist"
-                className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-[#1a1c1b] shadow-xs active:scale-75 transition-transform"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist(AURUM_SAREE_PRODUCT.id);
-                }}
+                key={product.id}
+                className="flex flex-col bg-white rounded-xl overflow-hidden shadow-xs group border border-black/[0.06] hover:shadow-md transition-shadow"
               >
-                <span
-                  className={`material-symbols-outlined text-[18px] ${
-                    isWishlisted(AURUM_SAREE_PRODUCT.id) ? 'text-[#ba1a1a]' : ''
-                  }`}
-                  style={
-                    isWishlisted(AURUM_SAREE_PRODUCT.id)
-                      ? { fontVariationSettings: "'FILL' 1" }
-                      : undefined
-                  }
+                {/* Image & Badges */}
+                <div
+                  className="relative aspect-[3/4] w-full bg-[#eeeeec] overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenProduct(product)}
                 >
-                  {isWishlisted(AURUM_SAREE_PRODUCT.id) ? 'favorite' : 'favorite_border'}
-                </span>
-              </button>
-              {/* Swatches floating over bottom of image */}
-              <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/80 backdrop-blur-xs px-1.5 py-1 rounded-full">
-                <span className="w-3 h-3 rounded-full bg-[#D4AF37] ring-1 ring-white" />
-                <span className="w-3 h-3 rounded-full bg-[#8E1B2A] ring-1 ring-white" />
-                <span className="w-3 h-3 rounded-full bg-[#1c3829] ring-1 ring-white" />
-              </div>
-            </div>
+                  <img
+                    src={product.primaryImage}
+                    alt={product.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
 
-            {/* Product Details */}
-            <div className="p-3 flex flex-col gap-1">
-              <div className="flex items-center justify-between text-[#444748] font-label-sm text-label-sm">
-                <span className="flex items-center gap-0.5 text-[#735c00] font-bold">
-                  <span
-                    className="material-symbols-outlined text-[13px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    star
-                  </span>
-                  4.9
-                </span>
-                <span>(128 reviews)</span>
-              </div>
-              <h4
-                onClick={() => handleOpenProduct(AURUM_SAREE_PRODUCT)}
-                className="font-headline-sm text-headline-sm line-clamp-1 text-[#1a1c1b] leading-snug cursor-pointer hover:text-[#735c00]"
-              >
-                Aurum Handloom Saree
-              </h4>
-              <div className="flex items-baseline gap-2">
-                <span className="font-headline-sm text-headline-sm font-bold text-[#1a1c1b]">
-                  {formatPrice(AURUM_SAREE_PRODUCT.priceINR)}
-                </span>
-                <span className="font-body-sm text-body-sm line-through text-[#444748]">
-                  {formatPrice(AURUM_SAREE_PRODUCT.mrpINR)}
-                </span>
-              </div>
-              <span className="font-label-caps-sm text-label-caps-sm text-[#735c00] font-semibold">
-                ≈ $342 USD (Duties Incl.)
-              </span>
-              {/* Size quick buttons */}
-              <div className="grid grid-cols-3 gap-1 pt-1">
-                {['S', 'M', 'L'].map((size) => (
+                  {/* Top Badges */}
+                  <div className="absolute top-2 left-2 flex flex-col gap-1">
+                    {product.editionBadge ? (
+                      <span className="px-2 py-0.5 rounded-full bg-black/80 text-white font-label-caps-sm text-label-caps-sm uppercase tracking-wider backdrop-blur-xs">
+                        {product.editionBadge}
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded-full bg-[#40000a] text-[#dd565f] font-label-caps-sm text-label-caps-sm font-bold uppercase tracking-wider">
+                        Rare Weave
+                      </span>
+                    )}
+                    {product.mrpINR > product.priceINR && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-[#735c00] text-white font-label-caps-sm text-label-caps-sm uppercase tracking-wider w-fit">
+                        Save {Math.round(((product.mrpINR - product.priceINR) / product.mrpINR) * 100)}%
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Wishlist Heart */}
                   <button
-                    key={size}
-                    onClick={() => {
-                      addToCart(
-                        AURUM_SAREE_PRODUCT,
-                        AURUM_SAREE_PRODUCT.colors[0],
-                        AURUM_SAREE_PRODUCT.sizes.find((s) => s.label === size) ||
-                          AURUM_SAREE_PRODUCT.sizes[0]
-                      );
+                    aria-label="Add to wishlist"
+                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center text-[#1a1c1b] shadow-xs active:scale-75 transition-transform"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(product.id);
                     }}
-                    className="py-1 text-center font-label-caps-sm text-label-caps-sm bg-[#eeeeec] text-[#1a1c1b] rounded hover:bg-black hover:text-white active:bg-black active:text-white transition-colors"
                   >
-                    {size}
+                    <span
+                      className={`material-symbols-outlined text-[18px] ${
+                        isWish ? 'text-[#ba1a1a]' : ''
+                      }`}
+                      style={isWish ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                    >
+                      {isWish ? 'favorite' : 'favorite_border'}
+                    </span>
                   </button>
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {/* Product Card 2: Nocturne Velvet Anarkali */}
-          <div className="flex flex-col bg-white rounded-sm overflow-hidden shadow-xs group border border-black/[0.04]">
-            <div
-              className="relative aspect-[3/4] w-full bg-[#eeeeec] overflow-hidden cursor-pointer"
-              onClick={() => handleOpenProduct(NOCTURNE_ANARKALI_PRODUCT)}
-            >
-              <div
-                className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url('${NOCTURNE_ANARKALI_PRODUCT.primaryImage}')` }}
-              />
-              <div className="absolute top-2 left-2">
-                <span className="px-2 py-0.5 rounded-full bg-[#e2e3e1] text-[#1a1c1b] font-label-caps-sm text-label-caps-sm font-bold uppercase tracking-wider">
-                  Bespoke
-                </span>
-              </div>
-              <button
-                aria-label="Add to wishlist"
-                className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-[#1a1c1b] shadow-xs active:scale-75 transition-transform"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist(NOCTURNE_ANARKALI_PRODUCT.id);
-                }}
-              >
-                <span
-                  className={`material-symbols-outlined text-[18px] ${
-                    isWishlisted(NOCTURNE_ANARKALI_PRODUCT.id) ? 'text-[#ba1a1a]' : ''
-                  }`}
-                  style={
-                    isWishlisted(NOCTURNE_ANARKALI_PRODUCT.id)
-                      ? { fontVariationSettings: "'FILL' 1" }
-                      : undefined
-                  }
-                >
-                  {isWishlisted(NOCTURNE_ANARKALI_PRODUCT.id) ? 'favorite' : 'favorite_border'}
-                </span>
-              </button>
-              <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/80 backdrop-blur-xs px-1.5 py-1 rounded-full">
-                <span className="w-3 h-3 rounded-full bg-[#1a1c1b] ring-1 ring-white" />
-                <span className="w-3 h-3 rounded-full bg-[#392131] ring-1 ring-white" />
-              </div>
-            </div>
+                  {/* Color preview dots */}
+                  {product.colors && product.colors.length > 0 && (
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/85 backdrop-blur-xs px-2 py-1 rounded-full shadow-xs">
+                      {product.colors.slice(0, 3).map((col) => (
+                        <span
+                          key={col.name}
+                          className="w-3 h-3 rounded-full ring-1 ring-black/20"
+                          style={{ backgroundColor: col.hex }}
+                          title={col.name}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-            {/* Product Details */}
-            <div className="p-3 flex flex-col gap-1">
-              <div className="flex items-center justify-between text-[#444748] font-label-sm text-label-sm">
-                <span className="flex items-center gap-0.5 text-[#735c00] font-bold">
-                  <span
-                    className="material-symbols-outlined text-[13px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    star
-                  </span>
-                  4.8
-                </span>
-                <span>(94 reviews)</span>
+                {/* Details & Actions */}
+                <div className="p-3.5 flex flex-col gap-2 flex-1 justify-between">
+                  <div>
+                    <div className="flex items-center justify-between text-[#444748] font-label-sm text-label-sm">
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (setSelectedCategoryFilter) setSelectedCategoryFilter(product.category);
+                          setCurrentScreen('categories');
+                        }}
+                        className="font-label-caps-sm text-label-caps-sm text-[#735c00] font-semibold uppercase hover:underline cursor-pointer"
+                      >
+                        {product.category}
+                      </span>
+                      <span className="flex items-center gap-0.5 text-[#735c00] font-bold text-xs">
+                        <span
+                          className="material-symbols-outlined text-[13px]"
+                          style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                          star
+                        </span>
+                        4.9
+                      </span>
+                    </div>
+
+                    {product.collection && (
+                      <span className="text-[10px] text-[#444748] font-medium line-clamp-1 flex items-center gap-1 mt-0.5">
+                        <span className="material-symbols-outlined text-[11px] text-[#735c00]">
+                          collections_bookmark
+                        </span>
+                        <span>{product.collection}</span>
+                      </span>
+                    )}
+
+                    <h4
+                      onClick={() => handleOpenProduct(product)}
+                      className="font-headline-sm text-headline-sm line-clamp-1 text-[#1a1c1b] leading-snug cursor-pointer hover:text-[#735c00] mt-0.5 font-medium"
+                    >
+                      {product.title}
+                    </h4>
+
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="font-headline-sm text-headline-sm font-bold text-[#1a1c1b]">
+                        {formatPrice(product.priceINR)}
+                      </span>
+                      {product.mrpINR > product.priceINR && (
+                        <span className="font-body-sm text-body-sm line-through text-[#444748]">
+                          {formatPrice(product.mrpINR)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Size Options Selector */}
+                  {product.sizes && product.sizes.length > 1 && (
+                    <div className="flex items-center gap-1 pt-1">
+                      <span className="text-[10px] text-[#444748] uppercase tracking-wider font-semibold mr-1">
+                        Size:
+                      </span>
+                      <div className="flex items-center gap-1 flex-wrap">
+                        {product.sizes.slice(0, 4).map((size) => (
+                          <button
+                            key={size.label}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSizes((prev) => ({ ...prev, [product.id]: size.label }));
+                            }}
+                            className={`px-2 py-0.5 text-center font-label-caps-sm text-label-caps-sm rounded text-[11px] transition-colors border ${
+                              currentSizeLabel === size.label
+                                ? 'bg-black text-white border-black font-bold'
+                                : 'bg-[#f4f4f2] text-[#1a1c1b] border-black/10 hover:bg-[#eeeeec]'
+                            }`}
+                          >
+                            {size.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Prominent Action Buttons */}
+                  <div className="flex flex-col gap-1.5 pt-1 mt-auto">
+                    <button
+                      id={`discover-add-to-cart-${product.id}`}
+                      onClick={(e) => handleQuickAdd(e, product)}
+                      className={`w-full py-2.5 px-3 ${
+                        isAdded
+                          ? 'bg-[#1b5e20] text-white'
+                          : 'bg-[#1a1c1b] hover:bg-neutral-800 text-white'
+                      } rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-95`}
+                    >
+                      <span className="material-symbols-outlined text-[17px] text-[#ffe088]">
+                        {isAdded ? 'check_circle' : 'shopping_bag'}
+                      </span>
+                      <span>{isAdded ? '✓ Added To Bag' : 'Add To Cart'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleOpenProduct(product)}
+                      className="w-full py-1.5 bg-[#f4f4f2] hover:bg-[#eeeeec] text-[#1a1c1b] rounded-lg text-[11px] font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1"
+                    >
+                      <span>View Atelier Details</span>
+                      <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <h4
-                onClick={() => handleOpenProduct(NOCTURNE_ANARKALI_PRODUCT)}
-                className="font-headline-sm text-headline-sm line-clamp-1 text-[#1a1c1b] leading-snug cursor-pointer hover:text-[#735c00]"
-              >
-                Nocturne Velvet Anarkali
-              </h4>
-              <div className="flex items-baseline gap-2">
-                <span className="font-headline-sm text-headline-sm font-bold text-[#1a1c1b]">
-                  {formatPrice(NOCTURNE_ANARKALI_PRODUCT.priceINR)}
-                </span>
-              </div>
-              <span className="font-label-caps-sm text-label-caps-sm text-[#735c00] font-semibold">
-                ≈ $239 USD (Duties Incl.)
-              </span>
-              {/* Size quick buttons */}
-              <div className="grid grid-cols-3 gap-1 pt-1">
-                {['M', 'L', 'XL'].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => {
-                      addToCart(
-                        NOCTURNE_ANARKALI_PRODUCT,
-                        NOCTURNE_ANARKALI_PRODUCT.colors[0],
-                        NOCTURNE_ANARKALI_PRODUCT.sizes.find((s) => s.label === size) ||
-                          NOCTURNE_ANARKALI_PRODUCT.sizes[0]
-                      );
-                    }}
-                    className="py-1 text-center font-label-caps-sm text-label-caps-sm bg-[#eeeeec] text-[#1a1c1b] rounded hover:bg-black hover:text-white active:bg-black active:text-white transition-colors"
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 

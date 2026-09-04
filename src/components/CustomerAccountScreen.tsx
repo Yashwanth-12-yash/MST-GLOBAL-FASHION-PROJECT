@@ -17,11 +17,18 @@ export const CustomerAccountScreen: React.FC = () => {
     setAuthModalMode,
     quickLoginAdmin,
     quickLoginCustomer,
-    logout
+    logout,
+    addresses,
+    addAddress,
+    deleteAddress,
+    setDefaultAddress,
+    selectedAddressId,
+    setSelectedAddressId
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<'orders' | 'addresses' | 'returns' | 'tickets' | 'profile'>('orders');
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<any | null>(null);
+  const [adminViewAllOrders, setAdminViewAllOrders] = useState(false);
 
   // Return modal state
   const [returnOrderId, setReturnOrderId] = useState<string | null>(null);
@@ -46,45 +53,40 @@ export const CustomerAccountScreen: React.FC = () => {
     }
   ]);
 
-  // Saved addresses state (Section 16)
-  const [addresses, setAddresses] = useState([
-    {
-      id: 'addr-1',
-      label: 'Home (Primary Shipping)',
-      name: 'Priya Sharma',
-      mobile: '+91 98201 54321',
-      line1: 'B-402, Imperial Heights, Worli Sea Face',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      postalCode: '400018',
-      country: 'India',
-      isDefault: true
-    },
-    {
-      id: 'addr-2',
-      label: 'Overseas Residence (USA)',
-      name: 'Priya Sharma',
-      mobile: '+1 (212) 555-0198',
-      line1: '742 Park Avenue, Apt 11B',
-      city: 'New York',
-      state: 'NY',
-      postalCode: '10021',
-      country: 'United States',
-      isDefault: false
-    }
-  ]);
-
+  // Address creation state
   const [isAddingAddress, setIsAddingAddress] = useState(false);
   const [newAddr, setNewAddr] = useState({
-    label: 'Office',
-    name: '',
-    mobile: '',
+    label: 'Home',
+    name: currentUser?.fullName || '',
+    mobile: currentUser?.mobile || '',
     line1: '',
     city: '',
     state: '',
     postalCode: '',
-    country: 'India'
+    country: currentUser?.country === 'US' ? 'United States' : 'India',
+    isDefault: false
   });
+
+  // Strict user isolation for order privacy:
+  // Customers only see their own orders (matched by customer email or customer ID)
+  const userOrders = orders.filter((order) => {
+    if (!currentUser) return false;
+    const orderEmail = (order.customerEmail || (order as any).customer?.email || '').toLowerCase().trim();
+    const userEmail = (currentUser.email || '').toLowerCase().trim();
+    const orderCustomerId = order.customerId;
+    const currentUserId = currentUser.id;
+
+    if (userEmail && orderEmail && userEmail === orderEmail) return true;
+    if (currentUserId && orderCustomerId && currentUserId === orderCustomerId) return true;
+    return false;
+  });
+
+  // Admins can toggle between their personal orders and the entire store catalog
+  const displayedOrders = isAdmin && adminViewAllOrders ? orders : userOrders;
+
+  // Real-world dynamic calculations
+  const lifetimeSpendINR = userOrders.reduce((sum, o) => sum + (o.subtotalINR || o.grandTotalINR || 0), 0);
+  const loyaltyPoints = Math.floor(lifetimeSpendINR / 100);
 
   const handleCreateReturn = () => {
     if (!returnOrderId) return;
@@ -141,9 +143,9 @@ export const CustomerAccountScreen: React.FC = () => {
                 {currentUser?.email || 'No email registered'} • {currentUser?.mobile || '+91 98201 54321'}
               </p>
               <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[#fed65b]">
-                <span>Lifetime Spend: ₹2,45,000</span>
+                <span>Lifetime Spend: {formatPrice(lifetimeSpendINR)}</span>
                 <span>•</span>
-                <span>Loyalty Points: 1,420 pts</span>
+                <span>Loyalty Points: {loyaltyPoints.toLocaleString('en-IN')} pts</span>
                 {isAdmin && (
                   <>
                     <span>•</span>
@@ -221,14 +223,68 @@ export const CustomerAccountScreen: React.FC = () => {
       {/* TAB 1: MY ORDERS */}
       {activeTab === 'orders' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-headline-sm text-base font-bold uppercase tracking-wider text-black">
-              Order History &amp; Live Tracking
-            </h2>
-            <span className="text-xs text-gray-500">{orders.length} orders recorded</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-gray-100">
+            <div>
+              <h2 className="font-headline-sm text-base font-bold uppercase tracking-wider text-black">
+                {isAdmin && adminViewAllOrders ? 'All Atelier Store Orders (Admin View)' : 'My Order History & Live Tracking'}
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {isAdmin && adminViewAllOrders
+                  ? 'Showing all cross-border orders across the global fashion house.'
+                  : `Showing authentic orders placed by ${currentUser?.email || 'your account'}.`}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {isAdmin && (
+                <div className="bg-[#f4f4f2] p-0.5 rounded-xl flex items-center text-xs">
+                  <button
+                    onClick={() => setAdminViewAllOrders(false)}
+                    className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                      !adminViewAllOrders ? 'bg-white text-black shadow-xs' : 'text-gray-500 hover:text-black'
+                    }`}
+                  >
+                    My Orders ({userOrders.length})
+                  </button>
+                  <button
+                    onClick={() => setAdminViewAllOrders(true)}
+                    className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                      adminViewAllOrders ? 'bg-[#fed65b] text-black shadow-xs' : 'text-gray-500 hover:text-black'
+                    }`}
+                  >
+                    All Store Orders ({orders.length})
+                  </button>
+                </div>
+              )}
+              <span className="text-xs text-gray-500 font-medium">
+                {displayedOrders.length} order{displayedOrders.length === 1 ? '' : 's'}
+              </span>
+            </div>
           </div>
 
-          {orders.map((order) => {
+          {/* EMPTY STATE FOR NEW USERS WITH NO ORDERS */}
+          {displayedOrders.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-black/5 p-10 text-center flex flex-col items-center justify-center my-4 shadow-xs animate-in fade-in">
+              <div className="w-16 h-16 rounded-full bg-amber-50 text-[#735c00] flex items-center justify-center mb-4 ring-8 ring-amber-50/50">
+                <span className="material-symbols-outlined text-[32px]">inventory_2</span>
+              </div>
+              <h3 className="font-headline-sm text-base font-bold text-black uppercase tracking-wider">
+                No Orders Placed Yet
+              </h3>
+              <p className="text-xs text-gray-500 max-w-md mt-1.5 mb-6 leading-relaxed">
+                You haven't placed any orders yet with <strong className="text-black">{currentUser?.email || 'this account'}</strong>.
+                Each piece in our atelier is handcrafted by master artisans with insured global express delivery.
+              </p>
+              <button
+                onClick={() => setCurrentScreen('discover')}
+                className="px-6 py-3 bg-[#1a1c1b] text-white hover:bg-black rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-md transition-all active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[16px]">shopping_bag</span>
+                <span>Explore Haute Couture Runway</span>
+              </button>
+            </div>
+          ) : (
+            displayedOrders.map((order) => {
             const isDelivered = order.status === 'Delivered' || order.status === 'DELIVERED';
             const statusColor = isDelivered
               ? 'bg-emerald-100 text-emerald-800'
@@ -325,7 +381,7 @@ export const CustomerAccountScreen: React.FC = () => {
                 </div>
               </div>
             );
-          })}
+          }))}
         </div>
       )}
 
@@ -415,19 +471,36 @@ export const CustomerAccountScreen: React.FC = () => {
                 </button>
                 <button
                   onClick={() => {
-                    if (!newAddr.name || !newAddr.line1) return;
-                    setAddresses([
-                      ...addresses,
-                      {
-                        id: 'addr-' + Date.now(),
-                        ...newAddr,
-                        isDefault: false
-                      }
-                    ]);
+                    if (!newAddr.name || !newAddr.line1) {
+                      showToast('Please provide your recipient name and street address.');
+                      return;
+                    }
+                    addAddress({
+                      label: newAddr.label || 'Home',
+                      name: newAddr.name,
+                      mobile: newAddr.mobile,
+                      line1: newAddr.line1,
+                      city: newAddr.city,
+                      state: newAddr.state,
+                      postalCode: newAddr.postalCode,
+                      country: newAddr.country,
+                      isDefault: addresses.length === 0
+                    });
                     setIsAddingAddress(false);
-                    showToast('Address added to your address book');
+                    setNewAddr({
+                      label: 'Home',
+                      name: currentUser?.fullName || '',
+                      mobile: currentUser?.mobile || '',
+                      line1: '',
+                      city: '',
+                      state: '',
+                      postalCode: '',
+                      country: currentUser?.country === 'US' ? 'United States' : 'India',
+                      isDefault: false
+                    });
+                    showToast('Address saved to your address book');
                   }}
-                  className="px-4 py-2 bg-black text-white text-xs font-semibold rounded-lg"
+                  className="px-4 py-2 bg-black text-white text-xs font-semibold rounded-lg hover:bg-neutral-800"
                 >
                   Save Address
                 </button>
@@ -435,30 +508,78 @@ export const CustomerAccountScreen: React.FC = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {addresses.map((addr) => (
-              <div
-                key={addr.id}
-                className="bg-white rounded-2xl border border-black/5 p-5 relative shadow-xs"
-              >
-                {addr.isDefault && (
-                  <span className="absolute top-4 right-4 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-                    Default Shipping
-                  </span>
-                )}
-                <span className="font-label-caps-sm text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  {addr.label}
-                </span>
-                <p className="font-bold text-sm text-black mt-1">{addr.name}</p>
-                <p className="text-xs text-gray-600 mt-0.5">{addr.line1}</p>
-                <p className="text-xs text-gray-600">
-                  {addr.city}, {addr.state} {addr.postalCode}
-                </p>
-                <p className="text-xs text-black font-semibold mt-1">{addr.country}</p>
-                <p className="text-xs text-gray-500 mt-1">Phone: {addr.mobile}</p>
+          {addresses.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-black/5 p-8 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#f4f4f2] text-gray-500 flex items-center justify-center mb-3">
+                <span className="material-symbols-outlined text-[24px]">location_off</span>
               </div>
-            ))}
-          </div>
+              <h3 className="font-bold text-sm text-black">No Delivery Addresses Saved</h3>
+              <p className="text-xs text-gray-500 max-w-sm mt-1 mb-4">
+                Add your preferred residential or office address for seamless 1-click bespoke checkout.
+              </p>
+              <button
+                onClick={() => setIsAddingAddress(true)}
+                className="px-4 py-2 bg-black text-white text-xs font-bold rounded-lg hover:bg-neutral-800 flex items-center gap-1.5"
+              >
+                <span className="material-symbols-outlined text-[14px]">add_location_alt</span>
+                <span>Add Primary Address</span>
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {addresses.map((addr) => (
+                <div
+                  key={addr.id}
+                  className={`bg-white rounded-2xl border p-5 relative shadow-xs transition-all ${
+                    addr.isDefault ? 'border-[#735c00]/40 ring-1 ring-[#735c00]/10' : 'border-black/5'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="font-label-caps-sm text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      {addr.label}
+                    </span>
+                    {addr.isDefault ? (
+                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                        Default Shipping
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setDefaultAddress(addr.id);
+                          showToast('Set as default delivery address');
+                        }}
+                        className="text-[11px] text-gray-500 hover:text-black hover:underline"
+                      >
+                        Set as Default
+                      </button>
+                    )}
+                  </div>
+
+                  <p className="font-bold text-sm text-black mt-2">{addr.name}</p>
+                  <p className="text-xs text-gray-600 mt-0.5">{addr.line1}</p>
+                  <p className="text-xs text-gray-600">
+                    {addr.city}, {addr.state} {addr.postalCode}
+                  </p>
+                  <p className="text-xs text-black font-semibold mt-1">{addr.country}</p>
+                  {addr.mobile && <p className="text-xs text-gray-500 mt-1">Phone: {addr.mobile}</p>}
+
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                    <span className="text-[10px] text-gray-400 font-mono">ID: {addr.id.slice(-6)}</span>
+                    <button
+                      onClick={() => {
+                        deleteAddress(addr.id);
+                        showToast('Address removed');
+                      }}
+                      className="text-red-500 hover:text-red-700 text-xs flex items-center gap-0.5"
+                    >
+                      <span className="material-symbols-outlined text-[13px]">delete</span>
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

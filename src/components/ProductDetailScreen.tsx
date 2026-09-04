@@ -16,10 +16,12 @@ export const ProductDetailScreen: React.FC = () => {
     setIsSizeDrawerOpen,
     setIs360ModalOpen,
     setIsConciergeOpen,
-    showToast
+    showToast,
+    cartCount
   } = useApp();
 
   const product = selectedProduct;
+  const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor>(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState<ProductSizeOption>(product.sizes[0]);
@@ -35,19 +37,19 @@ export const ProductDetailScreen: React.FC = () => {
 
   // Price calculations with size option delta
   const sizeDelta = selectedSize.priceDeltaINR || 0;
-  const finalPriceINR = product.priceINR + sizeDelta;
-  const finalMrpINR = product.mrpINR + sizeDelta;
+  const finalPriceINR = (product.priceINR + sizeDelta) * quantity;
+  const finalMrpINR = (product.mrpINR + sizeDelta) * quantity;
 
   const handleAddToCartClick = () => {
     setAddedState(true);
-    addToCart(product, selectedColor, selectedSize, 1);
+    addToCart(product, selectedColor, selectedSize, quantity);
     setTimeout(() => {
       setAddedState(false);
-    }, 2000);
+    }, 2500);
   };
 
   const handleBuyNowClick = () => {
-    addToCart(product, selectedColor, selectedSize, 1);
+    addToCart(product, selectedColor, selectedSize, quantity);
     setCurrentScreen('checkout');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -69,23 +71,47 @@ export const ProductDetailScreen: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full pb-32 bg-[#f9f9f7] max-w-4xl mx-auto">
-      {/* Top Heritage Breadcrumb & Notice */}
-      <div className="px-4 py-2.5 flex items-center justify-between bg-[#f4f4f2] text-xs">
-        <div className="flex items-center gap-1.5 text-[#444748] font-label-caps-sm text-label-caps-sm uppercase truncate">
-          <span>Heritage Atelier</span>
-          <span>/</span>
-          <span>Varanasi</span>
-          <span>/</span>
-          <span className="text-[#1a1c1b] font-semibold">{product.category}</span>
-        </div>
-        <div className="flex items-center gap-1 text-[#735c00] font-label-caps-sm text-label-caps-sm font-semibold shrink-0">
-          <span
-            className="material-symbols-outlined text-[14px]"
-            style={{ fontVariationSettings: "'FILL' 1" }}
+      {/* Top Heritage Breadcrumb, Back Navigation & Bag Shortcut */}
+      <div className="px-4 py-2.5 flex items-center justify-between bg-[#f4f4f2] text-xs border-b border-black/[0.04]">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setCurrentScreen('discover')}
+            className="flex items-center gap-1 py-1 px-2 rounded-md bg-white text-[#1a1c1b] font-medium border border-black/10 hover:bg-[#e8e8e6] transition-colors shadow-xs text-xs active:scale-95"
           >
-            verified
-          </span>
-          <span>100% Certified Silk Mark</span>
+            <span className="material-symbols-outlined text-[15px]">arrow_back</span>
+            <span>Back</span>
+          </button>
+          <div className="hidden sm:flex items-center gap-1.5 text-[#444748] font-label-caps-sm text-label-caps-sm uppercase truncate">
+            <span>Heritage Atelier</span>
+            <span>/</span>
+            <span>Varanasi</span>
+            <span>/</span>
+            <span className="text-[#1a1c1b] font-semibold">{product.category}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 text-[#735c00] font-label-caps-sm text-label-caps-sm font-semibold shrink-0">
+            <span
+              className="material-symbols-outlined text-[14px]"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              verified
+            </span>
+            <span>100% Certified Silk Mark</span>
+          </div>
+          <button
+            onClick={() => setCurrentScreen('bag')}
+            className="relative flex items-center gap-1 text-[#1a1c1b] py-1 px-2 rounded-md bg-white border border-black/10 hover:bg-[#e8e8e6] transition-colors shadow-xs text-xs font-semibold"
+          >
+            <span className="material-symbols-outlined text-[16px]">shopping_bag</span>
+            <span>Bag</span>
+            {cartCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-[#735c00] text-white text-[10px] font-bold">
+                {cartCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -355,6 +381,93 @@ export const ProductDetailScreen: React.FC = () => {
         </div>
       </section>
 
+      {/* Prominent Inline Purchase & Add to Cart Section */}
+      <section className="px-4 pt-6">
+        <div className="bg-white p-5 rounded-2xl border border-black/10 shadow-sm flex flex-col gap-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex flex-col">
+              <span className="font-label-caps-md text-label-caps-md uppercase tracking-wider font-bold text-[#1a1c1b]">
+                Select Quantity
+              </span>
+              <span className="text-xs text-[#735c00] font-medium">
+                Pessimistic allocation holds your pieces for 15 minutes
+              </span>
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="flex items-center border border-black/20 rounded-lg bg-[#f9f9f7] overflow-hidden shadow-xs">
+              <button
+                type="button"
+                aria-label="Decrease quantity"
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="w-10 h-10 flex items-center justify-center text-lg font-bold text-[#1a1c1b] hover:bg-[#eeeeec] active:bg-[#e2e3e1] transition-colors"
+              >
+                −
+              </button>
+              <span className="w-10 text-center font-bold text-sm text-[#1a1c1b]">
+                {quantity}
+              </span>
+              <button
+                type="button"
+                aria-label="Increase quantity"
+                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                className="w-10 h-10 flex items-center justify-center text-lg font-bold text-[#1a1c1b] hover:bg-[#eeeeec] active:bg-[#e2e3e1] transition-colors"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Large Action Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <button
+              id="inline-add-to-cart-btn"
+              onClick={handleAddToCartClick}
+              className={`w-full h-14 ${
+                addedState ? 'bg-[#1b5e20]' : 'bg-[#1a1c1b] hover:bg-neutral-800'
+              } text-white font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-2 rounded-xl transition-all shadow-md active:scale-[0.98]`}
+            >
+              <span className="material-symbols-outlined text-[20px] text-[#ffe088]">
+                {addedState ? 'check_circle' : 'shopping_bag'}
+              </span>
+              <span className="font-bold text-sm sm:text-base">
+                {addedState ? '✓ Added To Bag' : 'Add To Cart'}
+              </span>
+            </button>
+
+            <button
+              id="inline-buy-now-btn"
+              onClick={handleBuyNowClick}
+              className="w-full h-14 bg-[#735c00] hover:bg-[#856b00] text-white font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-2 rounded-xl transition-all shadow-md active:scale-[0.98]"
+            >
+              <span className="material-symbols-outlined text-[20px] text-[#ffe088]">
+                bolt
+              </span>
+              <span className="font-bold text-sm sm:text-base">Buy Now • Instant Checkout</span>
+            </button>
+          </div>
+
+          {/* Guarantee & Dispatch assurance footer */}
+          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-black/5 text-center text-[11px] text-[#444748]">
+            <div className="flex flex-col items-center">
+              <span className="material-symbols-outlined text-[18px] text-[#735c00]">verified</span>
+              <span className="font-semibold text-[#1a1c1b]">100% Genuine</span>
+              <span>Govt. Silk Mark</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="material-symbols-outlined text-[18px] text-[#735c00]">local_shipping</span>
+              <span className="font-semibold text-[#1a1c1b]">DHL Express</span>
+              <span>24h Dispatch</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="material-symbols-outlined text-[18px] text-[#735c00]">lock</span>
+              <span className="font-semibold text-[#1a1c1b]">Prepaid Duties</span>
+              <span>No Custom Fees</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Value & Trust Pillars */}
       <section className="px-4 pt-6">
         <div className="grid grid-cols-2 gap-3 bg-[#f4f4f2] p-4 rounded-xl border border-black/[0.04]">
@@ -523,36 +636,65 @@ export const ProductDetailScreen: React.FC = () => {
       )}
 
       {/* Sticky Conversion Footer Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md px-4 py-3 pb-safe border-t border-black/10 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center gap-3 max-w-xl mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md px-4 py-3 pb-safe border-t border-black/10 shadow-[0_-6px_25px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center gap-2 sm:gap-3 max-w-2xl mx-auto">
+          {/* Back button */}
+          <button
+            onClick={() => setCurrentScreen('discover')}
+            className="w-11 h-11 rounded-lg bg-[#eeeeec] hover:bg-[#e2e3e1] flex items-center justify-center text-[#1a1c1b] shrink-0 transition-colors shadow-xs"
+            title="Back to Collections"
+          >
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+          </button>
+
           {/* Live Price snippet */}
-          <div className="flex flex-col flex-shrink-0">
+          <div className="flex flex-col flex-shrink-0 min-w-[70px]">
             <span className="font-label-caps-sm text-label-caps-sm text-[#444748] uppercase font-medium">
-              Total
+              {quantity > 1 ? `Total (${quantity})` : 'Total'}
             </span>
-            <span className="font-headline-sm text-headline-sm font-semibold text-[#1a1c1b] leading-tight">
+            <span className="font-headline-sm text-headline-sm font-bold text-[#1a1c1b] leading-tight">
               {formatPrice(finalPriceINR)}
             </span>
           </div>
 
-          {/* Add to Bag */}
+          {/* Add to Bag / Cart */}
           <button
+            id="sticky-add-to-cart-btn"
             onClick={handleAddToCartClick}
-            className="flex-1 h-12 bg-[#e8e8e6] hover:bg-[#e2e3e1] text-[#1a1c1b] font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-lg transition-all active:scale-[0.98]"
+            className={`flex-1 h-12 ${
+              addedState ? 'bg-[#1b5e20]' : 'bg-[#1a1c1b] hover:bg-neutral-800'
+            } text-white font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-lg transition-all shadow-sm active:scale-[0.98]`}
           >
-            <span className="material-symbols-outlined text-[18px]">
+            <span className="material-symbols-outlined text-[18px] text-[#ffe088]">
               {addedState ? 'check_circle' : 'shopping_bag'}
             </span>
-            <span>{addedState ? 'Reserved In Bag' : 'Add To Bag'}</span>
+            <span className="font-bold text-xs sm:text-sm">
+              {addedState ? '✓ Added To Bag' : 'Add To Cart'}
+            </span>
           </button>
 
           {/* 1-Click Buy Now */}
           <button
+            id="sticky-buy-now-btn"
             onClick={handleBuyNowClick}
-            className="flex-1 h-12 bg-black hover:bg-neutral-800 text-white font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-lg transition-all active:scale-[0.98]"
+            className="flex-1 h-12 bg-[#735c00] hover:bg-[#856b00] text-white font-label-caps-md text-label-caps-md uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-lg transition-all shadow-sm active:scale-[0.98]"
           >
             <span className="material-symbols-outlined text-[18px] text-[#ffe088]">bolt</span>
-            <span>Buy Now</span>
+            <span className="font-bold text-xs sm:text-sm">Buy Now</span>
+          </button>
+
+          {/* Bag View Shortcut */}
+          <button
+            onClick={() => setCurrentScreen('bag')}
+            className="relative w-11 h-11 rounded-lg bg-[#eeeeec] hover:bg-[#e2e3e1] flex items-center justify-center text-[#1a1c1b] shrink-0 transition-colors shadow-xs"
+            title="View Shopping Bag"
+          >
+            <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#735c00] text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
       </div>

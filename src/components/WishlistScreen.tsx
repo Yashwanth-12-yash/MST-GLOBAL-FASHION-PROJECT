@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_PRODUCTS } from '../data/mockData';
 
@@ -11,6 +11,8 @@ export const WishlistScreen: React.FC = () => {
     setCurrentScreen,
     formatPrice
   } = useApp();
+
+  const [recentlyAddedId, setRecentlyAddedId] = useState<string | null>(null);
 
   const wishlistedProducts = ALL_PRODUCTS.filter((p) => wishlist.includes(p.id));
 
@@ -101,10 +103,19 @@ export const WishlistScreen: React.FC = () => {
                 <button
                   onClick={() => {
                     addToCart(p, p.colors[0], p.sizes[0], 1);
+                    setRecentlyAddedId(p.id);
+                    setTimeout(() => setRecentlyAddedId(null), 2000);
                   }}
-                  className="flex-1 py-2 bg-black text-white rounded text-xs font-semibold uppercase tracking-wider hover:bg-neutral-800 transition-colors"
+                  className={`flex-1 py-2.5 ${
+                    recentlyAddedId === p.id
+                      ? 'bg-[#1b5e20] text-white'
+                      : 'bg-[#1a1c1b] text-white hover:bg-neutral-800'
+                  } rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-xs active:scale-95`}
                 >
-                  Move To Bag
+                  <span className="material-symbols-outlined text-[16px] text-[#ffe088]">
+                    {recentlyAddedId === p.id ? 'check_circle' : 'shopping_bag'}
+                  </span>
+                  <span>{recentlyAddedId === p.id ? '✓ Added To Bag' : 'Add To Cart'}</span>
                 </button>
               </div>
             </div>

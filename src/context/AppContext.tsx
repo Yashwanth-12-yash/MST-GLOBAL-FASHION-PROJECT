@@ -89,9 +89,13 @@ interface AppContextType {
     adminSecret?: string;
     requestedRole?: string;
   }) => Promise<{ success: boolean; error?: string }>;
+  verifyOtp: (target: string, code: string) => Promise<{ success: boolean; error?: string; user?: UserAccount }>;
   logout: () => void;
   quickLoginAdmin: () => Promise<void>;
   quickLoginCustomer: () => Promise<void>;
+  // Catalog category filter state
+  selectedCategoryFilter: string | null;
+  setSelectedCategoryFilter: (cat: string | null) => void;
   // Real-World Address Management
   addresses: Address[];
   selectedAddressId: string | null;
@@ -111,7 +115,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('discover');
   const [selectedProduct, setSelectedProduct] =
     useState<Product>(AURUM_SAREE_PRODUCT);
-  const [currency, setCurrency] = useState<CurrencyCode>('INR');
+  
+  // Persisted currency state
+  const [currency, setCurrencyState] = useState<CurrencyCode>(() => {
+    try {
+      const saved = localStorage.getItem('mst_currency') as CurrencyCode;
+      if (saved && CURRENCIES[saved]) return saved;
+    } catch (e) {}
+    return 'INR';
+  });
+
+  const setCurrency = (code: CurrencyCode) => {
+    setCurrencyState(code);
+    try {
+      localStorage.setItem('mst_currency', code);
+    } catch (e) {}
+  };
+
   const [wishlist, setWishlist] = useState<string[]>([
     AURUM_SAREE_PRODUCT.id,
     'mst-anarkali-nocturne-8810',
@@ -183,6 +203,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     totalFormatted: string;
   } | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
 
   // Authentication & RBAC
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
@@ -281,6 +302,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || 'Network error during account registration' };
+    }
+  };
+
+  const verifyOtp = async (target: string, code: string) => {
+    try {
+      const res = await fetch('/api/auth/otp-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          otp: code.trim(),
+          email: target.includes('@') ? target.trim() : '',
+          mobile: !target.includes('@') ? target.trim() : ''
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || 'Invalid OTP code' };
+      }
+      const user = data.user;
+      setCurrentUser(user);
+      try {
+        localStorage.setItem('mst_user', JSON.stringify(user));
+      } catch (e) {}
+
+      setIsAuthModalOpen(false);
+      showToast(`Welcome back, ${user.fullName}! Successfully authenticated.`);
+      return { success: true, user };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Verification service unreachable' };
     }
   };
 
@@ -637,9 +687,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         setAuthModalMode,
         login,
         register,
+        verifyOtp,
         logout,
         quickLoginAdmin,
         quickLoginCustomer,
+        selectedCategoryFilter,
+        setSelectedCategoryFilter,
         // Real-World Address Management
         addresses,
         selectedAddressId,

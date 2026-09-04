@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { Address } from '../types';
+import { Address, LocationServiceability } from '../types';
 
 export const CheckoutScreen: React.FC = () => {
   const {
@@ -33,6 +33,19 @@ export const CheckoutScreen: React.FC = () => {
   const [shippingMethod, setShippingMethod] = useState<'dhl' | 'standard'>('dhl');
   const [selectedGateway, setSelectedGateway] = useState<'stripe' | 'razorpay' | 'paypal'>('stripe');
 
+  // Location & Courier Serviceability States
+  const [selectedServiceability, setSelectedServiceability] = useState<LocationServiceability | null>(null);
+  const [isCheckingSelectedServiceability, setIsCheckingSelectedServiceability] = useState(false);
+  const [formServiceability, setFormServiceability] = useState<LocationServiceability | null>(null);
+  const [isCheckingPincode, setIsCheckingPincode] = useState(false);
+  const [addressValidationReport, setAddressValidationReport] = useState<{
+    isValid: boolean;
+    verdict: 'VERIFIED' | 'WARNING' | 'INVALID';
+    issues: string[];
+    suggestions: string[];
+  } | null>(null);
+  const [isValidatingAddress, setIsValidatingAddress] = useState(false);
+
   // Address entry form state
   const [addressForm, setAddressForm] = useState({
     label: 'Home',
@@ -58,6 +71,93 @@ export const CheckoutScreen: React.FC = () => {
 
   const [upiVpa, setUpiVpa] = useState('collector@okhdfcbank');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Live Location & Courier Serviceability check for Selected Address
+  useEffect(() => {
+    if (selectedAddress?.postalCode) {
+      setIsCheckingSelectedServiceability(true);
+      fetch('/api/shipping/check-serviceability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          postalCode: selectedAddress.postalCode,
+          country: selectedAddress.country
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setSelectedServiceability(data);
+        })
+        .catch((err) => {
+          console.error('Serviceability check error:', err);
+        })
+        .finally(() => {
+          setIsCheckingSelectedServiceability(false);
+        });
+    } else {
+      setSelectedServiceability(null);
+    }
+  }, [selectedAddress?.postalCode, selectedAddress?.country]);
+
+  // Handler to verify Pincode/Zipcode in Address Entry Form
+  const handleCheckFormPincode = async (overrideCode?: string, overrideCountry?: string) => {
+    const code = (overrideCode ?? addressForm.postalCode).trim();
+    const ctry = (overrideCountry ?? addressForm.country).trim();
+    if (!code) {
+      showToast('Please enter a postal or PIN code to verify serviceability.');
+      return;
+    }
+    setIsCheckingPincode(true);
+    try {
+      const res = await fetch('/api/shipping/check-serviceability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postalCode: code, country: ctry })
+      });
+      const data: LocationServiceability = await res.json();
+      setFormServiceability(data);
+      if (data.isServiceable) {
+        showToast(`✓ Postal Code ${code} is 100% Serviceable by ${data.courierName}`);
+        // If city or state is empty, offer auto-fill
+        if (data.detectedCity && (!addressForm.city || !addressForm.state)) {
+          setAddressForm((prev) => ({
+            ...prev,
+            city: prev.city || data.detectedCity || '',
+            state: prev.state || data.detectedState || ''
+          }));
+        }
+      } else {
+        showToast(data.error || 'This location is currently not serviceable.');
+      }
+    } catch (e) {
+      showToast('Serviceability verification timed out.');
+    } finally {
+      setIsCheckingPincode(false);
+    }
+  };
+
+  // Full Address Quality & Completeness Audit
+  const handleValidateFormAddress = async () => {
+    setIsValidatingAddress(true);
+    try {
+      const res = await fetch('/api/shipping/validate-address', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addressForm)
+      });
+      const data = await res.json();
+      setAddressValidationReport(data);
+      if (data.isValid) {
+        showToast('✓ Address format verified for Air Waybill manifest.');
+      } else {
+        showToast('⚠️ Please review address verification issues.');
+      }
+    } catch (e) {
+      showToast('Validation check error.');
+    } finally {
+      setIsValidatingAddress(false);
+    }
+  };
 
   // Financial calculations using real active currency
   const subtotalINR = cartSubtotalINR > 0 ? cartSubtotalINR : 37680;
@@ -90,26 +190,51 @@ export const CheckoutScreen: React.FC = () => {
       deliveryInstructions: addr.deliveryInstructions || '',
       isDefault: addr.isDefault
     });
+    setFormServiceability(addr.serviceability || null);
+    setAddressValidationReport(null);
     setIsNewAddressOpen(true);
   };
 
-  const handleSaveAddress = (e: React.FormEvent) => {
+  const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!addressForm.name.trim() || !addressForm.mobile.trim() || !addressForm.line1.trim() || !addressForm.city.trim() || !addressForm.postalCode.trim()) {
       showToast('Please fill in your recipient name, mobile, street address, city, and postal code.');
       return;
     }
 
+    // Verify serviceability before saving
+    let svc = formServiceability;
+    if (!svc || svc.postalCode !== addressForm.postalCode.trim().toUpperCase()) {
+      try {
+        const res = await fetch('/api/shipping/check-serviceability', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ postalCode: addressForm.postalCode, country: addressForm.country })
+        });
+        svc = await res.json();
+      } catch (err) {}
+    }
+
+    if (svc && !svc.isServiceable) {
+      showToast(svc.error || 'Cannot save address: postal code is unserviceable.');
+      return;
+    }
+
+    const payload = {
+      ...addressForm,
+      serviceability: svc || undefined
+    };
+
     if (editingAddressId) {
-      updateAddress(editingAddressId, addressForm);
+      updateAddress(editingAddressId, payload);
       setEditingAddressId(null);
       setIsNewAddressOpen(false);
-      showToast('Preferred address updated successfully');
+      showToast('Preferred address updated & location confirmed');
     } else {
-      const created = addAddress(addressForm);
+      const created = addAddress(payload);
       setSelectedAddressId(created.id);
       setIsNewAddressOpen(false);
-      showToast('Preferred address saved & selected for delivery');
+      showToast('Preferred address saved & verified for delivery');
     }
   };
 
@@ -117,6 +242,11 @@ export const CheckoutScreen: React.FC = () => {
     if (!selectedAddress) {
       setIsNewAddressOpen(true);
       showToast('Please enter or select a preferred delivery address first.');
+      return;
+    }
+
+    if (selectedServiceability && !selectedServiceability.isServiceable) {
+      showToast('Cannot dispatch: Selected location is not serviceable by our courier partners.');
       return;
     }
 
@@ -134,6 +264,9 @@ export const CheckoutScreen: React.FC = () => {
         postalCode: selectedAddress.postalCode,
         country: selectedAddress.country
       },
+      courierName: selectedServiceability?.courierName || (isDomesticIndia ? 'Blue Dart Apex Air' : 'DHL Express Worldwide'),
+      deliveryMethod: selectedServiceability?.serviceType || 'Priority Express Air',
+      estimatedDeliveryDate: selectedServiceability?.deliveryEtaDate,
       currency: currency,
       subtotalINR: subtotalINR,
       discountINR: discountINR,
@@ -524,20 +657,142 @@ export const CheckoutScreen: React.FC = () => {
               )}
             </div>
 
-            <div className="mt-2 pt-2 bg-[#f4f4f2] rounded-lg p-2.5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#735c00] text-[18px]">verified</span>
-                <span className="font-body-sm text-body-sm text-[#1a1c1b]">
-                  {selectedAddress.country} Postal Code &amp; DHL Gateway Verified
-                </span>
+            {/* Real-World Logistics & Delivery Route Verification Banner */}
+            <div className="mt-2.5 pt-2.5 border-t border-black/10 flex flex-col gap-2">
+              <div className="bg-[#f9f9f7] rounded-xl p-3 border border-black/5 flex flex-col gap-2">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    {isCheckingSelectedServiceability ? (
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
+                    ) : selectedServiceability?.isServiceable ? (
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#1b5e20]" />
+                    ) : (
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                    )}
+                    <span className="font-label-caps-md text-[11px] tracking-wider font-bold uppercase text-[#1a1c1b]">
+                      {isCheckingSelectedServiceability
+                        ? 'VERIFYING COURIER SERVICEABILITY...'
+                        : selectedServiceability?.isServiceable
+                        ? '✓ LOCATION SERVICEABLE & DELIVERABLE'
+                        : '⚠️ LOCATION REQUIRES VERIFICATION'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (selectedAddress?.postalCode) {
+                          setIsCheckingSelectedServiceability(true);
+                          fetch('/api/shipping/check-serviceability', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              postalCode: selectedAddress.postalCode,
+                              country: selectedAddress.country
+                            })
+                          })
+                            .then((res) => res.json())
+                            .then((d) => {
+                              setSelectedServiceability(d);
+                              showToast(`Checked: ${d.isServiceable ? 'Serviceable' : 'Unserviceable'}`);
+                            })
+                            .finally(() => setIsCheckingSelectedServiceability(false));
+                        }
+                      }}
+                      className="text-[11px] text-[#735c00] hover:underline font-semibold flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-[13px]">sync</span>
+                      <span>Re-verify Route</span>
+                    </button>
+                    <span className="text-gray-300">|</span>
+                    <button
+                      type="button"
+                      onClick={() => setIsAddressModalOpen(true)}
+                      className="text-[11px] text-black hover:underline font-bold"
+                    >
+                      Change Address
+                    </button>
+                  </div>
+                </div>
+
+                {selectedServiceability?.isServiceable ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs">
+                    <div className="bg-white p-2.5 rounded-lg border border-black/5 flex items-start gap-2">
+                      <span className="material-symbols-outlined text-[18px] text-[#735c00] shrink-0 mt-0.5">
+                        local_shipping
+                      </span>
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
+                          Assigned Courier Partner
+                        </span>
+                        <span className="font-bold text-[#1a1c1b] block">
+                          {selectedServiceability.courierName}
+                        </span>
+                        <span className="text-[11px] text-gray-500">
+                          {selectedServiceability.serviceType}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-2.5 rounded-lg border border-black/5 flex items-start gap-2">
+                      <span className="material-symbols-outlined text-[18px] text-[#1b5e20] shrink-0 mt-0.5">
+                        schedule
+                      </span>
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
+                          Estimated Delivery Window
+                        </span>
+                        <span className="font-bold text-[#1b5e20] block">
+                          {selectedServiceability.estimatedDeliveryDays} Business Days
+                        </span>
+                        <span className="text-[11px] text-gray-500">
+                          Expected: {selectedServiceability.deliveryEtaDate}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Routing Pipeline Step Preview */}
+                    <div className="sm:col-span-2 bg-white p-2.5 rounded-lg border border-black/5 flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="text-gray-500 font-medium">Logistics Routing Pipeline:</span>
+                        <span className="font-mono text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-700 font-bold">
+                          Hub: {selectedServiceability.hubCode}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] flex-wrap text-gray-600">
+                        <span className="font-semibold text-black">Varanasi Atelier (VNS)</span>
+                        <span className="material-symbols-outlined text-[12px] text-gray-400">arrow_forward</span>
+                        <span>Air Freight Sort</span>
+                        <span className="material-symbols-outlined text-[12px] text-gray-400">arrow_forward</span>
+                        <span>{selectedServiceability.detectedCity || selectedAddress.city} Hub</span>
+                        <span className="material-symbols-outlined text-[12px] text-gray-400">arrow_forward</span>
+                        <span className="font-bold text-[#1b5e20]">Client Doorstep</span>
+                      </div>
+                      <div className="text-[10px] text-gray-400 pt-0.5 border-t border-gray-100 flex items-center gap-2">
+                        <span>✓ Tamper-evident silk seals</span>
+                        <span>•</span>
+                        <span>✓ GPS barcode air waybill auto-linked</span>
+                        <span>•</span>
+                        <span>✓ {selectedServiceability.codAvailable ? 'COD Eligible' : 'Prepaid DDP Transit'}</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : selectedServiceability && !selectedServiceability.isServiceable ? (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-start gap-2">
+                    <span className="material-symbols-outlined text-[16px] shrink-0 text-red-600 mt-0.5">error</span>
+                    <div>
+                      <span className="font-bold block">Delivery Unserviceable</span>
+                      <span>{selectedServiceability.error || 'The entered postal code is outside courier delivery corridors.'}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xs text-gray-500 flex items-center gap-1.5 py-1">
+                    <span className="material-symbols-outlined text-[16px] text-gray-400">fmd_good</span>
+                    <span>Ready for real-time courier route validation to {selectedAddress.postalCode}, {selectedAddress.country}.</span>
+                  </div>
+                )}
               </div>
-              <button
-                type="button"
-                onClick={() => setIsAddressModalOpen(true)}
-                className="text-xs text-[#735c00] font-bold hover:underline"
-              >
-                Change Address
-              </button>
             </div>
           </div>
         ) : (
@@ -734,17 +989,144 @@ export const CheckoutScreen: React.FC = () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-label-caps-sm text-xs text-[#444748] font-bold">
-                  POSTAL / ZIP / PIN CODE *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={addressForm.postalCode}
-                  onChange={(e) => setAddressForm({ ...addressForm, postalCode: e.target.value })}
-                  placeholder="e.g. 500033 / 10021"
-                  className="bg-white h-11 px-3 rounded-lg text-[#1a1c1b] text-xs outline-none border border-black/10 focus:border-black"
-                />
+                <div className="flex items-center justify-between">
+                  <label className="font-label-caps-sm text-xs text-[#444748] font-bold">
+                    POSTAL / ZIP / PIN CODE *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => handleCheckFormPincode()}
+                    disabled={isCheckingPincode || !addressForm.postalCode.trim()}
+                    className="text-[11px] text-[#735c00] font-bold hover:underline flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <span className="material-symbols-outlined text-[13px]">
+                      {isCheckingPincode ? 'hourglass_top' : 'verified'}
+                    </span>
+                    <span>{isCheckingPincode ? 'Checking...' : 'Verify Serviceability'}</span>
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={addressForm.postalCode}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setAddressForm({ ...addressForm, postalCode: val });
+                      // If user completed 6 digits for India or 5 digits for US, auto check
+                      if ((addressForm.country === 'India' && val.trim().length === 6) ||
+                          (addressForm.country === 'United States' && val.trim().length === 5)) {
+                        handleCheckFormPincode(val, addressForm.country);
+                      }
+                    }}
+                    placeholder="e.g. 500033 / 560001 / 10021"
+                    className="bg-white w-full h-11 px-3 pr-24 rounded-lg text-[#1a1c1b] text-xs outline-none border border-black/10 focus:border-black font-mono tracking-wider"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleCheckFormPincode()}
+                    className="absolute right-1.5 top-1.5 bottom-1.5 px-2.5 bg-black text-white rounded-md text-[11px] font-semibold hover:bg-neutral-800 transition-colors"
+                  >
+                    Check
+                  </button>
+                </div>
+
+                {/* Quick Postal Code Test Presets */}
+                <div className="flex items-center gap-1.5 flex-wrap pt-1 text-[10px] text-gray-500">
+                  <span className="font-medium">Quick test:</span>
+                  {[
+                    { code: '560001', label: 'Bengaluru' },
+                    { code: '110001', label: 'Delhi' },
+                    { code: '400018', label: 'Mumbai' },
+                    { code: '500033', label: 'Hyderabad' },
+                    { code: '221001', label: 'Varanasi' },
+                    { code: '10021', label: 'NYC (DHL)' }
+                  ].map((preset) => (
+                    <button
+                      key={preset.code}
+                      type="button"
+                      onClick={() => {
+                        const targetCountry = preset.code === '10021' ? 'United States' : 'India';
+                        setAddressForm((prev) => ({
+                          ...prev,
+                          postalCode: preset.code,
+                          country: targetCountry
+                        }));
+                        handleCheckFormPincode(preset.code, targetCountry);
+                      }}
+                      className="px-1.5 py-0.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 font-mono transition-colors"
+                    >
+                      {preset.code} ({preset.label})
+                    </button>
+                  ))}
+                </div>
+
+                {/* Live Serviceability Feedback Banner */}
+                {formServiceability && (
+                  <div
+                    className={`mt-1.5 p-2.5 rounded-lg border text-xs flex flex-col gap-1.5 ${
+                      formServiceability.isServiceable
+                        ? 'bg-[#e8f5e9]/50 border-[#1b5e20]/20 text-[#1b5e20]'
+                        : 'bg-red-50 border-red-200 text-red-700'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-bold">
+                        <span className="material-symbols-outlined text-[16px]">
+                          {formServiceability.isServiceable ? 'check_circle' : 'cancel'}
+                        </span>
+                        <span>
+                          {formServiceability.isServiceable
+                            ? `100% Serviceable by ${formServiceability.courierName}`
+                            : 'Location Unserviceable'}
+                        </span>
+                      </div>
+                      {formServiceability.isServiceable && (
+                        <span className="text-[10px] uppercase font-bold bg-[#1b5e20] text-white px-2 py-0.5 rounded">
+                          {formServiceability.estimatedDeliveryDays} Days ETA
+                        </span>
+                      )}
+                    </div>
+
+                    {formServiceability.isServiceable ? (
+                      <div className="flex flex-col gap-1 text-[11px] text-gray-700">
+                        <div className="flex items-center justify-between">
+                          <span>
+                            Delivery Hub: <strong className="font-mono">{formServiceability.hubCode}</strong> ({formServiceability.zone})
+                          </span>
+                          <span>
+                            ETA: <strong>{formServiceability.deliveryEtaDate}</strong>
+                          </span>
+                        </div>
+
+                        {formServiceability.detectedCity && (
+                          <div className="flex items-center justify-between pt-1 border-t border-black/5 mt-0.5">
+                            <span className="text-gray-500">
+                              Detected: <strong>{formServiceability.detectedCity}, {formServiceability.detectedState}</strong>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setAddressForm((prev) => ({
+                                  ...prev,
+                                  city: formServiceability.detectedCity || prev.city,
+                                  state: formServiceability.detectedState || prev.state
+                                }));
+                                showToast('City & State auto-filled!');
+                              }}
+                              className="text-[11px] text-[#735c00] font-bold hover:underline flex items-center gap-0.5"
+                            >
+                              <span className="material-symbols-outlined text-[12px]">auto_awesome</span>
+                              <span>Auto-fill City &amp; State</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-[11px]">{formServiceability.error}</p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -755,7 +1137,13 @@ export const CheckoutScreen: React.FC = () => {
                 </label>
                 <select
                   value={addressForm.country}
-                  onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })}
+                  onChange={(e) => {
+                    const newCountry = e.target.value;
+                    setAddressForm({ ...addressForm, country: newCountry });
+                    if (addressForm.postalCode) {
+                      handleCheckFormPincode(addressForm.postalCode, newCountry);
+                    }
+                  }}
                   className="bg-white h-11 px-3 rounded-lg text-[#1a1c1b] text-xs outline-none border border-black/10 focus:border-black"
                 >
                   <option value="India">India (Domestic Express)</option>
@@ -786,6 +1174,68 @@ export const CheckoutScreen: React.FC = () => {
                   className="bg-white h-11 px-3 rounded-lg text-[#1a1c1b] text-xs outline-none border border-black/10 focus:border-black"
                 />
               </div>
+            </div>
+
+            {/* Address Verification & Quality Audit Box */}
+            <div className="bg-[#f9f9f7] rounded-xl p-3 border border-black/10 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[18px] text-[#735c00]">shield</span>
+                  <span className="font-label-caps-sm text-xs text-black font-bold uppercase tracking-wider">
+                    Courier Address Quality Check
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleValidateFormAddress}
+                  disabled={isValidatingAddress}
+                  className="text-xs text-[#735c00] font-bold hover:underline flex items-center gap-1 disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined text-[14px]">
+                    {isValidatingAddress ? 'hourglass_top' : 'fact_check'}
+                  </span>
+                  <span>{isValidatingAddress ? 'Auditing...' : 'Audit Format'}</span>
+                </button>
+              </div>
+
+              {addressValidationReport ? (
+                <div className="flex flex-col gap-1.5 pt-1 text-xs">
+                  <div
+                    className={`flex items-center gap-1.5 font-bold ${
+                      addressValidationReport.isValid ? 'text-[#1b5e20]' : 'text-amber-700'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[16px]">
+                      {addressValidationReport.isValid ? 'check_circle' : 'warning'}
+                    </span>
+                    <span>
+                      {addressValidationReport.isValid
+                        ? 'Passed Courier Validation: Ready for Air Waybill Generation'
+                        : 'Review Suggested Changes'}
+                    </span>
+                  </div>
+
+                  {addressValidationReport.issues && addressValidationReport.issues.length > 0 && (
+                    <ul className="list-disc pl-5 text-[11px] text-red-600 space-y-0.5">
+                      {addressValidationReport.issues.map((issue, idx) => (
+                        <li key={idx}>{issue}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {addressValidationReport.suggestions && addressValidationReport.suggestions.length > 0 && (
+                    <div className="text-[11px] text-gray-600 bg-white p-2 rounded border border-black/5">
+                      {addressValidationReport.suggestions.map((sug, idx) => (
+                        <p key={idx}>💡 {sug}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-[11px] text-gray-500 leading-normal">
+                  Our system automatically validates phone format, premise number, and postal hub routing to ensure guaranteed delivery without customs or courier hold-ups.
+                </p>
+              )}
             </div>
 
             <label className="flex items-center gap-2 mt-1 cursor-pointer">
